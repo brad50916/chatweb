@@ -154,17 +154,19 @@ export default function Dashboard() {
         <Container sx={{
               height: '100vh',
               width: '100wh',
-              mt: 11,
               ml: 2,
-              mr: 2
+              mr: 2,
+              display: "flex",
+              flexDirection: "column",
             }}>
-          <Box sx={{ border: '1px solid #d1d1e0'}}>
+          <Box sx={{ border: '1px solid #d1d1e0', flexGrow: 1, overflow: 'auto', mt: 10}}>
             <Paper sx={{ p: 2, m: 2}}>
               hello
             </Paper>
+
           </Box>
 
-          <Paper>
+          <Paper sx={{mt:2, mb:2, bottom: 0}}>
             <TextInput text="Input"/>
           </Paper>  
         </Container>
