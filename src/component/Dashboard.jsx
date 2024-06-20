@@ -151,41 +151,23 @@ export default function Dashboard() {
             {secondaryListItems}
           </List>
         </Drawer>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100vh',
-            width: '100vw',
-          }}
-        >
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
+        <Container sx={{
               height: '100vh',
-              overflow: 'auto',
-              border: '1px solid #d1d1e0',
-              ml: 3,
-              mr: 3,
-              mt: 10
-            }}
-          >
-            <Container maxWidth="lg" sx={{ mt: 2}}>
-              <Paper sx={{ p: 2 }}>
-                hello
-              </Paper>
+              width: '100wh',
+              mt: 11,
+              ml: 2,
+              mr: 2
+            }}>
+          <Box sx={{ border: '1px solid #d1d1e0'}}>
+            <Paper sx={{ p: 2, m: 2}}>
+              hello
+            </Paper>
+          </Box>
 
-            </Container>
-          </Box>
-          <Box>
-            <Container maxWidth="lg" sx={{ mt: 2, mb: 4}}>
-              <Paper>
-                <TextInput text="Input"/>
-              </Paper>  
-            </Container>
-          </Box>
-        </Box>
+          <Paper>
+            <TextInput text="Input"/>
+          </Paper>  
+        </Container>
       </Box>
     </ThemeProvider>
   );
