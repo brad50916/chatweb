@@ -152,33 +152,39 @@ export default function Dashboard() {
           </List>
         </Drawer>
         <Box
-          component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
             height: '100vh',
-            overflow: 'auto',
+            width: '100vw',
           }}
         >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
-              </Grid>
-            </Grid>
-          </Container>
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Paper>
-              <TextInput text="Input"/>
-            </Paper>  
-          </Container>
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
+              border: '1px solid #d1d1e0',
+              ml: 3,
+              mr: 3,
+              mt: 10
+            }}
+          >
+            <Container maxWidth="lg" sx={{ mt: 2}}>
+              <Paper sx={{ p: 2 }}>
+                hello
+              </Paper>
+
+            </Container>
+          </Box>
+          <Box>
+            <Container maxWidth="lg" sx={{ mt: 2, mb: 4}}>
+              <Paper>
+                <TextInput text="Input"/>
+              </Paper>  
+            </Container>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
