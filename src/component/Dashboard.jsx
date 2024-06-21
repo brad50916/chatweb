@@ -19,6 +19,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Orders from './Orders';
 import TextInput from './TextInput';
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
 
 const drawerWidth = 240;
 
@@ -166,9 +169,13 @@ export default function Dashboard() {
 
           </Box>
 
-          <Paper sx={{mt:2, mb:2, bottom: 0}}>
+          <Stack direction="row" spacing={1} sx={{mt:2, mb:2, bottom: 0}}>
             <TextInput text="Input"/>
-          </Paper>  
+            <Button variant="contained" endIcon={<SendIcon />}>
+              Send
+            </Button>
+          </Stack>
+
         </Container>
       </Box>
     </ThemeProvider>
