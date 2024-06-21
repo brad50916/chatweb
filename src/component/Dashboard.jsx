@@ -11,7 +11,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -24,6 +23,8 @@ import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 
 const drawerWidth = 240;
+
+const data = new Array(10).fill('hello');
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -162,10 +163,15 @@ export default function Dashboard() {
               display: "flex",
               flexDirection: "column",
             }}>
-          <Box sx={{ border: '1px solid #d1d1e0', flexGrow: 1, overflow: 'auto', mt: 10}}>
-            <Paper sx={{ p: 2, m: 2}}>
+          <Box sx={{ border: '1px solid #c2c2d6', flexGrow: 1, overflow: 'auto', mt: 10, borderRadius: 1}}>
+            {/* <Paper elevation={1} sx={{ p: 2, m: 2, width: 100}}>
               hello
-            </Paper>
+            </Paper> */}
+            {data.map((item, index) => (
+              <Paper key={index} elevation={1} sx={{ p: 2, m: 2, width: 100 }}>
+                {item}
+              </Paper>
+            ))}
 
           </Box>
 

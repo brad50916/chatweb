@@ -9,9 +9,10 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import Box from '@mui/material/Box';
 
 export const mainListItems = (
-  <React.Fragment>
+  <Box sx={{overflow: 'auto', height: 280}}>
     <ListItemButton>
       <ListItemIcon>
         <DashboardIcon />
@@ -42,7 +43,25 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton>
-  </React.Fragment>
+    <ListItemButton>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Integrations" />
+    </ListItemButton>
+    <ListItemButton>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Integrations" />
+    </ListItemButton>
+    <ListItemButton>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Integrations" />
+    </ListItemButton>
+  </Box>
 );
 
 export const secondaryListItems = (
