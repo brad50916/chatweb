@@ -25,11 +25,13 @@ const getUserById = async (request, response) => {
   }
 };
 
-const createUser = async (request, response) => {
-  const { name, email } = request.body;
+const createUser = async (request, response) => { 
+  const { firstname, lastname, email, password } = request.body;
+  console.log(firstname, lastname, email, password)
   try {
-    const results = await pool.query('INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id', [name, email]);
-    response.status(201).send(`User added with ID: ${results.rows[0].id}`);
+    const results = await pool.query('INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING id', 
+    [firstname, lastname, email, password]);
+    response.status(201).json({ message: 'User added', userId: results.rows[0].id });
   } catch (error) {
     response.status(500).json({ error: error.toString() });
   }

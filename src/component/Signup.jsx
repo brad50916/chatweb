@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -27,18 +28,36 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      firstname: formData.get('firstName'),
+      lastname: formData.get('lastName'),
+      email: formData.get('email'),
+      password: formData.get('password')
+    };
+    try {
+      const response = await fetch('http://localhost:5001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json(); 
+      console.log(result.message, result.userId)
+      if (response.ok) {
+        navigate('/signin');
+      }
+    }
+    catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
