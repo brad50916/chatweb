@@ -21,6 +21,7 @@ import TextInput from './TextInput';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -96,7 +97,9 @@ export default function Dashboard() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  const location = useLocation();
+  const { user } = location.state || {};
+  console.log(user);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
