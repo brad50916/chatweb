@@ -25,18 +25,37 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Login route
-app.post('/login', passport.authenticate('local', {
-    successRedirect: '/profile',
-    failureRedirect: '/login',
-    failureFlash: true
-  }));  
-  
-app.get('/profile', (req, res) => {
-    res.status(201).json({ message: 'Welcome to your profile', user: req.user });
-});
-// app.get('/profile', isAuthenticated, (req, res) => {
-//     res.status(201).json({ message: 'Welcome to your profile', user: req.user });
-// });
+// app.post('/login', passport.authenticate('local', {
+//     // successRedirect: '/profile',
+//     failureRedirect: '/login',
+//     failureFlash: true
+//   }, (req, res) => {
+//     console.log('Logged in', req);
+//     // if (req.isAuthenticated) {
+//     //     res.status(201).json({ message: 'Welcome to your profile', user: req.user });
+//     // } else {
+//     //     res.status(401).json({ message: 'Unauthorized' });
+//     // }
+// }));  
+
+app.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect('/login');
+      }
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+        console.log('Logged in', req.user);
+        return res.status(201).json({ message: 'Welcome to your profile', user: req.user });
+      });
+    })(req, res, next);
+  });
+
 app.use('/', routes)
 
 app.listen(port, () => {

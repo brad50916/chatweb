@@ -8,16 +8,16 @@ const pool = require('./db');
 
 // Serialize user into the session
 passport.serializeUser((user, done) => {
-  console.log("serilizing user")
+  console.log("serilizing user");
   done(null, user.id);
 });
 
 // Deserialize user from the session
 passport.deserializeUser(async (id, done) => {
-  console.log("deserilizing user")
+  console.log("deserilizing user");
   try {
     const results = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-    const user = results.rows;
+    const user = results.rows[0];
     done(null, user);
   } catch (error) {
     done(error, null);
@@ -38,13 +38,12 @@ passport.use(new LocalStrategy({
     }
     const user = result.rows[0];
     // const isMatch = await bcrypt.compare(password, user.password);
-    console.log(password, user.password);
     const isMatch = password === user.password;
     if (!isMatch) {
       console.log("Incorrect password")
       return done(null, false, { message: 'Incorrect password' });
     }
-    console.log("authenticate successfully")
+    console.log("authenticate successfully");
     return done(null, user);
   } catch (error) {
     return done(error, false);

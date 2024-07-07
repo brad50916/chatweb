@@ -52,9 +52,9 @@ export default function SignInSide() {
   
       if (response.ok) {
         const result = await response.json();
-        console.log(result.message, result.user);
+        console.log(1, result.message, result.user);
         // Redirect to profile or any other page after successful login
-        navigate('/dashboard', { state: { user: result.user } });
+        navigate('/', { state: { user: result.user } });
       } else {
         console.error('Login failed');
       }

@@ -98,8 +98,9 @@ export default function Dashboard() {
     setOpen(!open);
   };
   const location = useLocation();
-  const { user } = location.state || {};
-  console.log(user);
+  const { user } = location.state;
+  console.log(2, user);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
