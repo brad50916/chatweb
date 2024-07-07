@@ -15,13 +15,13 @@ import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems, SecondaryListItems } from './listItems';
 import TextInput from './TextInput';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -93,6 +93,7 @@ const defaultTheme = createTheme({
 
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -102,7 +103,7 @@ export default function Dashboard() {
     } else {
       navigate('/signin');
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const logout = () => {
       localStorage.removeItem('token');
@@ -169,7 +170,8 @@ export default function Dashboard() {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            <SecondaryListItems onClickHandler={logout} />
+            {/* {secondaryListItems} */}
           </List>
         </Drawer>
         <Container sx={{

@@ -64,7 +64,8 @@ export const mainListItems = (
   </Box>
 );
 
-export const secondaryListItems = (
+export function SecondaryListItems ({ onClickHandler }) {
+  return (
   <React.Fragment>
     <ListSubheader component="div" inset>
       Saved reports
@@ -81,11 +82,12 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={onClickHandler}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Logout" />
     </ListItemButton>
   </React.Fragment>
-);
+  );
+}

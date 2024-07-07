@@ -32,6 +32,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -39,8 +40,6 @@ export default function SignInSide() {
     }
   }, []);
 
-  const navigate = useNavigate();
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
