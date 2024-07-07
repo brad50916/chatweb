@@ -16,12 +16,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import Orders from './Orders';
 import TextInput from './TextInput';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -93,13 +93,26 @@ const defaultTheme = createTheme({
 
 
 export default function Dashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Here, you can add a function to verify the token from the server if needed
+        setIsAuthenticated(true);
+    } else {
+      navigate('/signin');
+    }
+  }, []);
+
+  const logout = () => {
+      localStorage.removeItem('token');
+      setIsAuthenticated(false);
+  };
+  
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const location = useLocation();
-  const { user } = location.state;
-  console.log(2, user);
 
   return (
     <ThemeProvider theme={defaultTheme}>

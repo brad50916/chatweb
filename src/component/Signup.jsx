@@ -42,7 +42,7 @@ export default function SignUp() {
       password: formData.get('password')
     };
     try {
-      const response = await fetch('http://localhost:5001/users', {
+      const response = await fetch('http://localhost:5001/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link component={RouterLink} to='/Signin' variant="body2">
+                <Link component={RouterLink} to='/singin' variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

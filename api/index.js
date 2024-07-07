@@ -1,62 +1,62 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken');
 const app = express()
 const port = 5001
 const routes = require('./routers')
 const cors = require('cors')
-const passport = require('./passportConfig');
-const session = require('express-session');
-const flash = require('connect-flash');
+const pool = require('./db');
 
-app.use(cors())
+const JWT_SECRET = 'cutecat';
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+}));
+
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 )
-app.use(session({
-    secret: 'secret cat',
-    resave: false,
-    saveUninitialized: true
-}));
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
 
-// Login route
-// app.post('/login', passport.authenticate('local', {
-//     // successRedirect: '/profile',
-//     failureRedirect: '/login',
-//     failureFlash: true
-//   }, (req, res) => {
-//     console.log('Logged in', req);
-//     // if (req.isAuthenticated) {
-//     //     res.status(201).json({ message: 'Welcome to your profile', user: req.user });
-//     // } else {
-//     //     res.status(401).json({ message: 'Unauthorized' });
-//     // }
-// }));  
-
-app.post('/login', (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        return res.redirect('/login');
-      }
-      req.logIn(user, (err) => {
-        if (err) {
-          return next(err);
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    console.log(email, password);
+    try {
+        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        if (result.rows.length == 0) {
+          console.log("User not found")
+          return res.status(404).json({ message: 'User not found' });
         }
-        console.log('Logged in', req.user);
-        return res.status(201).json({ message: 'Welcome to your profile', user: req.user });
-      });
-    })(req, res, next);
-  });
+        const user = result.rows[0];
+        // const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = password === user.password;
+        if (!isMatch) {
+          console.log("Incorrect password");
+          return res.status(404).json({ message: 'Incorrrect password' });
+        }
+        console.log("authenticate successfully");
+        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token: token, message: 'Login successfully', user: user });
+    } catch (error) {
+        console.log(error);
+    }
+});
 
-app.use('/', routes)
+app.post('/signup', async (req, res) => {
+    const { firstname, lastname, email, password } = request.body;
+    console.log(firstname, lastname, email, password);
+    try {
+        const results = await pool.query('INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING id', 
+        [firstname, lastname, email, password]);
+        response.status(201).json({ message: 'User added', userId: results.rows[0].id });
+      } catch (error) {
+        response.status(500).json({ error: error.toString() });
+      }
+});
+
+// app.use('/', routes)
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
