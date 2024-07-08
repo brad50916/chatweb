@@ -44,14 +44,14 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-    const { firstname, lastname, email, password } = request.body;
+    const { firstname, lastname, email, password } = req.body;
     console.log(firstname, lastname, email, password);
     try {
         const results = await pool.query('INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING id', 
         [firstname, lastname, email, password]);
-        response.status(201).json({ message: 'User added', userId: results.rows[0].id });
+        res.status(201).json({ message: 'User added', userId: results.rows[0].id });
       } catch (error) {
-        response.status(500).json({ error: error.toString() });
+        res.status(500).json({ error: error.toString() });
       }
 });
 
