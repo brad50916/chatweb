@@ -1,67 +1,82 @@
 const express = require('express');
 const pool = require('./db');
 const router = express.Router();
+const JWT_SECRET = 'cutecat';
+const jwt = require('jsonwebtoken');
 
-const getUsers = async (request, response) => {
-  try {
-    const results = await pool.query('SELECT * FROM users ORDER BY id ASC');
-    response.status(200).json(results.rows);
-  } catch (error) {
-    response.status(500).json({ error: error.toString() });
-  }
-};
-
-const getUserById = async (request, response) => {
-  const id = parseInt(request.params.id);
-  try {
-    const results = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-    if (results.rows.length > 0) {
-      response.status(200).json(results.rows);
-    } else {
-      response.status(404).json({ error: 'User not found' });
+router.get('/search', async (req, res) => {
+    const username = req.query.username;
+    console.log(username);
+    if (!username) {
+      return res.status(400).send('Username is required');
     }
-  } catch (error) {
-    response.status(500).json({ error: error.toString() });
-  }
+  
+    try {
+      const user = await pool.query('SELECT * FROM users WHERE username LIKE $1', [username + '%']);
+      console.log(user.rows);
+      if (user.rows.length === 0) {
+        return res.status(404).send('User not found');
+      }
+      res.status(200).json(user.rows[0]);
+    } catch (err) {
+      console.error('Error executing query', err.stack);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization; 
+    if (!token) {
+        return res.status(401).json({ message: 'Auth token is not provided' });
+    }
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET); // Replace with your secret key
+        req.userId = decoded.id; 
+        next(); // Move to next middleware
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
 };
 
-const createUser = async (request, response) => { 
-  const { firstname, lastname, email, password } = request.body;
-  console.log(firstname, lastname, email, password)
-  try {
-    const results = await pool.query('INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING id', 
-    [firstname, lastname, email, password]);
-    response.status(201).json({ message: 'User added', userId: results.rows[0].id });
-  } catch (error) {
-    response.status(500).json({ error: error.toString() });
-  }
-};
+router.get('/verify', verifyToken, (req, res) => {
+    // Access userId from request object
+    const userId = req.userId;
+    res.status(200).json({ userId: userId, message: 'Protected route accessed' });
+});
 
-const updateUser = async (request, response) => {
-  const id = parseInt(request.params.id);
-  const { name, email } = request.body;
-  try {
-    await pool.query('UPDATE users SET name = $1, email = $2 WHERE id = $3', [name, email, id]);
-    response.status(200).send(`User modified with ID: ${id}`);
-  } catch (error) {
-    response.status(500).json({ error: error.toString() });
-  }
-};
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        if (result.rows.length == 0) {
+          console.log("User not found")
+          return res.status(404).json({ message: 'User not found' });
+        }
+        const user = result.rows[0];
+        // const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = password === user.password;
+        if (!isMatch) {
+          console.log("Incorrect password");
+          return res.status(404).json({ message: 'Incorrrect password' });
+        }
+        console.log("authenticate successfully");
+        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token: token, message: 'Login successfully', user_id: user.id });
+    } catch (error) {
+        console.log(error);
+    }
+});
 
-const deleteUser = async (request, response) => {
-  const id = parseInt(request.params.id);
-  try {
-    await pool.query('DELETE FROM users WHERE id = $1', [id]);
-    response.status(200).send(`User deleted with ID: ${id}`);
-  } catch (error) {
-    response.status(500).json({ error: error.toString() });
-  }
-};
-
-router.get('/users', getUsers);
-router.get('/users/:id', getUserById);
-router.post('/users', createUser);
-router.put('/users/:id', updateUser);
-router.delete('/users/:id', deleteUser);
+router.post('/signup', async (req, res) => {
+    const { firstname, lastname, email, password, username } = req.body;
+    console.log(firstname, lastname, email, password);
+    try {
+        const results = await pool.query('INSERT INTO users (firstname, lastname, email, password, username) VALUES ($1, $2, $3, $4, $5) RETURNING id', 
+        [firstname, lastname, email, password, username]);
+        res.status(201).json({ message: 'User added', userId: results.rows[0].id });
+      } catch (error) {
+        res.status(500).json({ error: error.toString() });
+      }
+});
 
 module.exports = router;

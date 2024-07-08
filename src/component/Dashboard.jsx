@@ -22,7 +22,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import SearchBar from './Search';
 const drawerWidth = 240;
 
 const data = new Array(10).fill('hello');
@@ -166,8 +166,9 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard {UserId}
+              Dashboard 
             </Typography>
+            <SearchBar />
             <IconButton color="inherit">
               <StyledBadge badgeContent={5} color="primary">
                 <NotificationsIcon />
