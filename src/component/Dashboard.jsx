@@ -95,19 +95,41 @@ const defaultTheme = createTheme({
 export default function Dashboard() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [UserId, setUserId] = useState(null);
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        // Here, you can add a function to verify the token from the server if needed
-        setIsAuthenticated(true);
-    } else {
-      navigate('/signin');
-    }
-  }, [isAuthenticated]);
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:5001/verify', {
+                    headers: {
+                        'Authorization': token
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("token authenticated successfully");
+                    setUserId(data.userId); 
+                    setIsAuthenticated(true);
+                } else {
+                    console.log("token is invalid");
+                    navigate('/sign-in');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                navigate('/sign-in');
+            }
+        } else {
+            navigate('/sign-in');
+        }
+    };
+    fetchUserData();
+}, []);
 
   const logout = () => {
       localStorage.removeItem('token');
       setIsAuthenticated(false);
+      navigate('/signin');
   };
   
   const [open, setOpen] = React.useState(true);
@@ -144,7 +166,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Dashboard {UserId}
             </Typography>
             <IconButton color="inherit">
               <StyledBadge badgeContent={5} color="primary">

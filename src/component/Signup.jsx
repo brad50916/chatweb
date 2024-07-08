@@ -39,7 +39,8 @@ export default function SignUp() {
       firstname: formData.get('firstName'),
       lastname: formData.get('lastName'),
       email: formData.get('email'),
-      password: formData.get('password')
+      password: formData.get('password'),
+      username: formData.get('username')
     };
     try {
       const response = await fetch('http://localhost:5001/signup', {
@@ -99,6 +100,16 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
                 />
               </Grid>
               <Grid item xs={12}>
