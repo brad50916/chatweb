@@ -3,6 +3,8 @@ const pool = require('./db');
 const router = express.Router();
 const JWT_SECRET = 'cutecat';
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const saltRounds = 10
 
 router.get('/search', async (req, res) => {
     const username = req.query.username;
@@ -53,8 +55,8 @@ router.post('/login', async (req, res) => {
           return res.status(404).json({ message: 'User not found' });
         }
         const user = result.rows[0];
-        // const isMatch = await bcrypt.compare(password, user.password);
-        const isMatch = password === user.password;
+        const isMatch = await bcrypt.compare(password, user.password);
+        // const isMatch = password === user.password;
         if (!isMatch) {
           console.log("Incorrect password");
           return res.status(404).json({ message: 'Incorrrect password' });
@@ -69,10 +71,12 @@ router.post('/login', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
     const { firstname, lastname, email, password, username } = req.body;
-    console.log(firstname, lastname, email, password);
+    // console.log(firstname, lastname, email, password);
+    const encrypted = await bcrypt.hash(password, saltRounds);
     try {
+
         const results = await pool.query('INSERT INTO users (firstname, lastname, email, password, username) VALUES ($1, $2, $3, $4, $5) RETURNING id', 
-        [firstname, lastname, email, password, username]);
+        [firstname, lastname, email, encrypted, username]);
         res.status(201).json({ message: 'User added', userId: results.rows[0].id });
       } catch (error) {
         res.status(500).json({ error: error.toString() });

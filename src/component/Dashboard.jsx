@@ -113,14 +113,14 @@ export default function Dashboard() {
                     setIsAuthenticated(true);
                 } else {
                     console.log("token is invalid");
-                    navigate('/sign-in');
+                    navigate('/signin');
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                navigate('/sign-in');
+                navigate('/signin');
             }
         } else {
-            navigate('/sign-in');
+            navigate('/signin');
         }
     };
     fetchUserData();

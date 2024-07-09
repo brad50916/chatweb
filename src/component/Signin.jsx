@@ -34,11 +34,33 @@ const defaultTheme = createTheme();
 export default function SignInSide() {
   const navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/dashboard');
-    }
-  }, []);
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:5001/verify', {
+                    headers: {
+                        'Authorization': token
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("token authenticated successfully");
+                    navigate('/dashboard');
+                } else {
+                    console.log("token is invalid");
+                    navigate('/signin');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                navigate('/signin');
+            }
+        } else {
+            navigate('/signin');
+        }
+    };
+    fetchUserData();
+}, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
