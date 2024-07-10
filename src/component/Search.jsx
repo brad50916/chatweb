@@ -5,9 +5,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -110,44 +113,37 @@ export default function () {
                 )}
                 onChange={handleOptionSelect}
             />
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
+            <Dialog
                 open={open}
                 onClose={handleClose}
-                closeAfterTransition
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                TransitionComponent={Fade}
+                maxWidth="sm" // optional, adjust as per your design
+                fullWidth // optional, adjust as per your design
             >
-                <Fade in={open}>
-                    <Box 
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: 600,
-                            bgcolor: 'background.paper',
-                            boxShadow: 24,
-                            p: 4,
-                        }}
-                    >
-                        {selectedUser && (
-                            <>
-                                <Typography id="transition-modal-title" variant="h6" component="h2">
-                                    User Info
-                                </Typography>
-                                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                <Box sx={{ p: 4 }}>
+                    {selectedUser && (
+                        <>
+                            <DialogTitle id="transition-modal-title">User Info</DialogTitle>
+                            <DialogContent>
+                                <Typography variant="body1">
                                     Username: {selectedUser.username}
                                 </Typography>
-                                <Typography id="transition-modal-description" sx={{ mt: 1 }}>
+                                <Typography variant="body1">
                                     Email: {selectedUser.email}
                                 </Typography>
                                 {/* Add more user details as needed */}
-                                <Button onClick={handleClose} sx={{ mt: 2 }}>Close</Button>
-                            </>
-                        )}
-                    </Box>
-                </Fade>
-            </Modal>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose} color="primary">
+                                    Close
+                                </Button>
+                            </DialogActions>
+                        </>
+                    )}
+                </Box>
+            </Dialog>
         </Box>
     );
 }
