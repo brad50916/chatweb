@@ -6,7 +6,6 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 
@@ -54,6 +53,7 @@ export default function () {
     const [userdata, setUserdata] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -80,12 +80,14 @@ export default function () {
     const handleInputChange = (event) => {
         setUsername(event.target.value);
     };
+
     const handleOptionSelect = (event, value) => {
         if (!value) {
             return;
         }
         setSelectedUser(value);
         setOpen(true);
+        setValue(null);
     };
 
     const handleClose = () => {
@@ -98,6 +100,7 @@ export default function () {
                 freeSolo
                 options={userdata}
                 getOptionLabel={(option) => option.username}
+                value={value}
                 renderInput={(params) => (
                     <TextField 
                         {...params} 
@@ -121,9 +124,8 @@ export default function () {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            width: 400,
+                            width: 600,
                             bgcolor: 'background.paper',
-                            border: '2px solid #000',
                             boxShadow: 24,
                             p: 4,
                         }}
