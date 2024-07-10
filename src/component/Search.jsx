@@ -1,7 +1,15 @@
-import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useState, useEffect} from 'react';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
+
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -43,6 +51,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function () {
     const [username, setUsername] = useState('');
+    const [userdata, setUserdata] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [open, setOpen] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
           if (username) {
@@ -52,31 +64,88 @@ export default function () {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
               const data = await response.json();
-              console.log(data);
+              setUserdata(data);
+            //   console.log(data.id);
             } catch (error) {
               console.error('Error fetching data:', error);
             }
           } else {
             console.log('user not found');
+            setUserdata([]);
           }
         };
         fetchData();
       }, [username]);
 
-    const handleInputChange = async (event) => {
+    const handleInputChange = (event) => {
         setUsername(event.target.value);
     };
+    const handleOptionSelect = (event, value) => {
+        if (!value) {
+            return;
+        }
+        setSelectedUser(value);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
-        <Search>
-            <SearchIconWrapper>
-                <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-            value={username}
-            onChange={handleInputChange}
+        <Box sx={{ width: 300 }}>
+            <Autocomplete
+                id="free-solo-demo"
+                freeSolo
+                options={userdata}
+                getOptionLabel={(option) => option.username}
+                renderInput={(params) => (
+                    <TextField 
+                        {...params} 
+                        label="Search..." 
+                        onChange={handleInputChange} 
+                    />
+                )}
+                onChange={handleOptionSelect}
             />
-        </Search>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+            >
+                <Fade in={open}>
+                    <Box 
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: 400,
+                            bgcolor: 'background.paper',
+                            border: '2px solid #000',
+                            boxShadow: 24,
+                            p: 4,
+                        }}
+                    >
+                        {selectedUser && (
+                            <>
+                                <Typography id="transition-modal-title" variant="h6" component="h2">
+                                    User Info
+                                </Typography>
+                                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                                    Username: {selectedUser.username}
+                                </Typography>
+                                <Typography id="transition-modal-description" sx={{ mt: 1 }}>
+                                    Email: {selectedUser.email}
+                                </Typography>
+                                {/* Add more user details as needed */}
+                                <Button onClick={handleClose} sx={{ mt: 2 }}>Close</Button>
+                            </>
+                        )}
+                    </Box>
+                </Fade>
+            </Modal>
+        </Box>
     );
 }

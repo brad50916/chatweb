@@ -15,11 +15,11 @@ router.get('/search', async (req, res) => {
   
     try {
       const user = await pool.query('SELECT * FROM users WHERE username LIKE $1', [username + '%']);
-      console.log(user.rows);
       if (user.rows.length === 0) {
         return res.status(404).send('User not found');
       }
-      res.status(200).json(user.rows[0]);
+      console.log(user.rows);
+      res.status(200).json(user.rows);
     } catch (err) {
       console.error('Error executing query', err.stack);
       res.status(500).send('Internal Server Error');
