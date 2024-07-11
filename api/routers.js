@@ -4,11 +4,30 @@ const router = express.Router();
 const JWT_SECRET = 'cutecat';
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const saltRounds = 10
+const saltRounds = 10;
+
+router.post('/chat', async (req, res) => {
+    const { user_id, friend_id } = req.body;
+    try {
+        // Check if the pair already exists
+        const checkQuery = 'SELECT chat_id FROM chats WHERE (user1_id = $1 AND user2_id = $2) OR (user1_id = $2 AND user2_id = $1)';
+        const checkResults = await pool.query(checkQuery, [user_id, friend_id]);
+        if (checkResults.rows.length > 0) {
+            return res.status(409).json({ message: 'Chat pair already exists', chatId: checkResults.rows[0].chat_id });
+        }
+        
+        const results = await pool.query('INSERT INTO chats (user1_id, user2_id) VALUES ($1, $2) RETURNING chat_id', 
+        [user_id, friend_id]);
+        res.status(201).json({ message: 'Chat added', chatId: results.rows[0].chat_id });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
+
 
 router.get('/search', async (req, res) => {
     const username = req.query.username;
-    console.log(username);
     if (!username) {
       return res.status(400).send('Username is required');
     }
@@ -73,7 +92,6 @@ router.post('/signup', async (req, res) => {
     // console.log(firstname, lastname, email, password);
     const encrypted = await bcrypt.hash(password, saltRounds);
     try {
-
         const results = await pool.query('INSERT INTO users (firstname, lastname, email, password, username) VALUES ($1, $2, $3, $4, $5) RETURNING id', 
         [firstname, lastname, email, encrypted, username]);
         res.status(201).json({ message: 'User added', userId: results.rows[0].id });

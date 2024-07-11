@@ -23,9 +23,10 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './Search';
+import ChatContent from './ChatContent';
+
 const drawerWidth = 240;
 
-const data = new Array(10).fill('hello');
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -96,6 +97,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [UserId, setUserId] = useState(null);
+  const [currentChatId, setCurrentChatId] = useState(null);
+
   useEffect(() => {
     const fetchUserData = async () => {
         const token = localStorage.getItem('token');
@@ -166,9 +169,9 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard 
+              Dashboard
             </Typography>
-            <SearchBar />
+            <SearchBar UserId={UserId} setCurrentChatId={setCurrentChatId} />
             <IconButton color="inherit">
               <StyledBadge badgeContent={5} color="primary">
                 <NotificationsIcon />
@@ -197,34 +200,7 @@ export default function Dashboard() {
             {/* {secondaryListItems} */}
           </List>
         </Drawer>
-        <Container sx={{
-              height: '100vh',
-              width: '100wh',
-              ml: 2,
-              mr: 2,
-              display: "flex",
-              flexDirection: "column",
-            }}>
-          <Box sx={{ border: '1px solid #c2c2d6', flexGrow: 1, overflow: 'auto', mt: 10, borderRadius: 1}}>
-            {/* <Paper elevation={1} sx={{ p: 2, m: 2, width: 100}}>
-              hello
-            </Paper> */}
-            {data.map((item, index) => (
-              <Paper key={index} elevation={1} sx={{ p: 2, m: 2, width: 100 }}>
-                {item}
-              </Paper>
-            ))}
-
-          </Box>
-
-          <Stack direction="row" spacing={1} sx={{mt:2, mb:2, bottom: 0}}>
-            <TextInput text="Input"/>
-            <Button variant="contained" endIcon={<SendIcon />}>
-              Send
-            </Button>
-          </Stack>
-
-        </Container>
+        { currentChatId && <ChatContent UserId={UserId} currentChatId={currentChatId} />}
       </Box>
     </ThemeProvider>
   );

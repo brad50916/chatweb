@@ -51,7 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   }));
 
-export default function () {
+export default function SearchBar({UserId, setCurrentChatId}) {
     const [username, setUsername] = useState('');
     const [userdata, setUserdata] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -96,6 +96,35 @@ export default function () {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleChat = async () => {
+        try{ 
+            const response = await fetch('http://localhost:5001/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: UserId,
+                    friend_id: selectedUser.id,
+                }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message, data.chatId);
+                setCurrentChatId(data.chatId);
+                // Redirect to chat page
+            } else {
+                const data = await response.json();
+                console.log(data.message, data.chatId);
+                setCurrentChatId(data.chatId);
+            }
+        } catch (error) {
+            console.error('Error creating chat:', error);
+        }
+        setOpen(false);
+    }
+    
     return (
         <Box sx={{ width: 300 }}>
             <Autocomplete
@@ -136,6 +165,9 @@ export default function () {
                                 {/* Add more user details as needed */}
                             </DialogContent>
                             <DialogActions>
+                                <Button onClick={handleChat} color="primary">
+                                    Start chatting
+                                </Button>
                                 <Button onClick={handleClose} color="primary">
                                     Close
                                 </Button>
