@@ -1,45 +1,44 @@
-import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { MainListItems, SecondaryListItems } from './listItems';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SearchBar from './Search';
-import ChatContent from './ChatContent';
+import * as React from "react";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiDrawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import Paper from "@mui/material/Paper";
+import Container from "@mui/material/Container";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { MainListItems, SecondaryListItems } from "./listItems";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SearchBar from "./Search";
+import ChatContent from "./ChatContent";
 
 const drawerWidth = 240;
 
-
 const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
+  "& .MuiBadge-badge": {
     right: -3,
     top: 13,
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
-    padding: '0 4px',
+    padding: "0 4px",
   },
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   backgroundColor: theme.palette.primary.main,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
@@ -47,47 +46,46 @@ const AppBar = styled(MuiAppBar, {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     backgroundColor: theme.palette.primary.main,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    '& .MuiDrawer-paper': {
-      position: 'relative',
-      whiteSpace: 'nowrap',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  "& .MuiDrawer-paper": {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: "border-box",
+    ...(!open && {
+      overflowX: "hidden",
+      transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        duration: theme.transitions.duration.leavingScreen,
       }),
-      boxSizing: 'border-box',
-      ...(!open && {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
-      }),
-    },
-  }),
-);
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+}));
 
 const defaultTheme = createTheme({
   palette: {
     primary: {
-      main: '#9494b8',
+      main: "#9494b8",
     },
   },
 });
-
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -98,27 +96,27 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const response = await fetch('http://localhost:5001/verify', {
-                    headers: {
-                        'Authorization': token
-                    }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log("token authenticated successfully");
-                    setUserId(data.userId); 
-                } else {
-                    navigate('/signin');
-                }
-            } catch (error) {
-                navigate('/signin');
-            }
-        } else {
-            navigate('/signin');
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await fetch("http://localhost:5001/verify", {
+            headers: {
+              Authorization: token,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log("token authenticated successfully");
+            setUserId(data.userId);
+          } else {
+            navigate("/signin");
+          }
+        } catch (error) {
+          navigate("/signin");
         }
+      } else {
+        navigate("/signin");
+      }
     };
     fetchUserData();
   }, []);
@@ -141,15 +139,15 @@ export default function Dashboard() {
           console.error("Error finding chat room ID:", error);
         }
       }
-    }
+    };
     fetchChatRoomData();
   }, [currentChatId, UserId]);
 
   const logout = () => {
-      localStorage.removeItem('token');
-      navigate('/signin');
+    localStorage.removeItem("token");
+    navigate("/signin");
   };
-  
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -157,12 +155,12 @@ export default function Dashboard() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: "24px", // keep right padding when drawer closed
             }}
           >
             <IconButton
@@ -171,8 +169,8 @@ export default function Dashboard() {
               aria-label="open drawer"
               onClick={toggleDrawer}
               sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
+                marginRight: "36px",
+                ...(open && { display: "none" }),
               }}
             >
               <MenuIcon />
@@ -197,9 +195,9 @@ export default function Dashboard() {
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
               px: [1],
             }}
           >
@@ -209,19 +207,27 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <MainListItems chatRoomData={chatRoomData} UserId={UserId} setCurrentChatId={setCurrentChatId}/>
+            <MainListItems
+              chatRoomData={chatRoomData}
+              UserId={UserId}
+              setCurrentChatId={setCurrentChatId}
+            />
             <Divider sx={{ my: 1 }} />
             <SecondaryListItems onClickHandler={logout} />
           </List>
         </Drawer>
-        { currentChatId ? (
-        <ChatContent UserId={UserId} currentChatId={currentChatId} />
+        {currentChatId ? (
+          <ChatContent UserId={UserId} currentChatId={currentChatId} />
         ) : (
-          <Container sx={{ display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '80vh', }}>
+          <Container
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "80vh",
+            }}
+          >
             <Typography variant="h5" component="div">
               Welcome! Please select a chat to start messaging.
             </Typography>

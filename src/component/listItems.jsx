@@ -11,13 +11,16 @@ import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Box from "@mui/material/Box";
 
-export function MainListItems({chatRoomData, UserId, setCurrentChatId}) {
+export function MainListItems({ chatRoomData, UserId, setCurrentChatId }) {
   return (
     <Box sx={{ overflow: "auto", height: 280 }}>
       {chatRoomData.map((item, index) => {
         if (item.user1_id === UserId) {
           return (
-            <ListItemButton key={index} onClick={() => setCurrentChatId(item.chat_id)}>
+            <ListItemButton
+              key={index}
+              onClick={() => setCurrentChatId(item.chat_id)}
+            >
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
@@ -33,7 +36,7 @@ export function MainListItems({chatRoomData, UserId, setCurrentChatId}) {
             <ListItemText primary={item.user1_id} />
           </ListItemButton>
         );
-    })}
+      })}
     </Box>
   );
 }
