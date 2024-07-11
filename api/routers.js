@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-router.get('/getAllChatRoomId', async (req, res) => {
+router.get('/getAllChatRoomData', async (req, res) => {
     const userId = req.query.userId;
     try {
         // Check if the pair already exists

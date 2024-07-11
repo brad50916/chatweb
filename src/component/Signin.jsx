@@ -48,11 +48,9 @@ export default function SignInSide() {
                     console.log("token authenticated successfully");
                     navigate('/dashboard');
                 } else {
-                    console.log("token is invalid");
                     navigate('/signin');
                 }
             } catch (error) {
-                console.error('Error fetching user data:', error);
                 navigate('/signin');
             }
         } else {

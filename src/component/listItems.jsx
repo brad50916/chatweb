@@ -11,58 +11,32 @@ import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Box from "@mui/material/Box";
 
-export const mainListItems = (
-  <Box sx={{ overflow: "auto", height: 280 }}>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Orders" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-  </Box>
-);
+export function MainListItems({chatRoomData, UserId, setCurrentChatId}) {
+  return (
+    <Box sx={{ overflow: "auto", height: 280 }}>
+      {chatRoomData.map((item, index) => {
+        if (item.user1_id === UserId) {
+          return (
+            <ListItemButton key={index} onClick={() => setCurrentChatId(item.chat_id)}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary={item.user2_id} />
+            </ListItemButton>
+          );
+        }
+        return (
+          <ListItemButton key={index}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary={item.user1_id} />
+          </ListItemButton>
+        );
+    })}
+    </Box>
+  );
+}
 
 export function SecondaryListItems({ onClickHandler }) {
   return (
