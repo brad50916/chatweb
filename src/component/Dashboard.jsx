@@ -127,7 +127,29 @@ export default function Dashboard() {
         }
     };
     fetchUserData();
-}, []);
+  }, []);
+
+  useEffect(() => {
+    const fetchChatRoomData = async () => {
+      if (UserId) {
+        try {
+          const response = await fetch(
+            `http://localhost:5001/getAllChatRoomId?userId=${UserId}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+          } else {
+            const data = await response.json();
+            console.log(data);
+          }
+        } catch (error) {
+          console.error("Error finding chat room ID:", error);
+        }
+      }
+    }
+    fetchChatRoomData();
+  }, [currentChatId, UserId]);
 
   const logout = () => {
       localStorage.removeItem('token');

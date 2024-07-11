@@ -6,11 +6,31 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-router.post('/chat', async (req, res) => {
+router.get('/getAllChatRoomId', async (req, res) => {
+    const userId = req.query.userId;
+    try {
+        // Check if the pair already exists
+        const checkQuery = 'SELECT * FROM chats WHERE (user1_id = $1) OR (user2_id = $1)';
+        const checkResults = await pool.query(checkQuery, [userId]);
+        if (checkResults.rows.length > 0) {
+            // console.log(checkResults.rows);
+            return res.status(200).json(checkResults.rows);
+        } else {
+            return res.status(404).json({ message: 'No chat room found' });
+        }
+
+    }
+    catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
+
+
+router.post('/getChatRoomId', async (req, res) => {
     const { user_id, friend_id } = req.body;
     try {
         // Check if the pair already exists
-        const checkQuery = 'SELECT chat_id FROM chats WHERE (user1_id = $1 AND user2_id = $2) OR (user1_id = $2 AND user2_id = $1)';
+        const checkQuery = 'SELECT * FROM chats WHERE (user1_id = $1 AND user2_id = $2) OR (user1_id = $2 AND user2_id = $1)';
         const checkResults = await pool.query(checkQuery, [user_id, friend_id]);
         if (checkResults.rows.length > 0) {
             return res.status(409).json({ message: 'Chat pair already exists', chatId: checkResults.rows[0].chat_id });
