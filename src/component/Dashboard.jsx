@@ -15,11 +15,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { MainListItems, SecondaryListItems } from "./listItems";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./Search";
 import ChatContent from "./ChatContent";
-import io from "socket.io-client";
+import { SocketContext } from './SocketContext';
 
 const drawerWidth = 240;
 
@@ -93,27 +93,7 @@ export default function Dashboard() {
   const [UserId, setUserId] = useState(null);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatRoomData, setChatRoomData] = useState([]);
-  const socketRef = useRef(null);
-
-  useEffect(() => {
-    socketRef.current = io("http://localhost:5001");
-
-    socketRef.current.on('connect', () => {
-      console.log('Connected to the server');
-    });
-
-    socketRef.current.on('disconnect', () => {
-      console.log('Disconnected from the server');
-    });
-
-    // socketRef.current.on('receiveMessage', (message) => {
-    //   setMessages(prevMessages => [...prevMessages, message]);
-    // });
-
-    return () => {
-      socketRef.current.disconnect();
-    };
-  }, []);
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -166,8 +146,8 @@ export default function Dashboard() {
 
   const logout = () => {
     localStorage.removeItem("token");
-    if (socketRef.current) {
-      socketRef.current.disconnect();
+    if (socket) {
+      socket.disconnect();
     }
     navigate("/signin");
   };
@@ -244,7 +224,7 @@ export default function Dashboard() {
           <ChatContent
             UserId={UserId}
             currentChatId={currentChatId}
-            socketRef={socketRef}
+            socket={socket}
           />
         ) : (
           <Container

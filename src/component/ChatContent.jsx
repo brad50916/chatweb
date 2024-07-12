@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 
-export default function ChatContent({ UserId, currentChatId, socketRef }) {
+export default function ChatContent({ UserId, currentChatId, socket }) {
   const [input, setInput] = useState("");
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -20,8 +20,8 @@ export default function ChatContent({ UserId, currentChatId, socketRef }) {
       currentChatId: currentChatId, // replace with actual chat ID
       text: input,
     };
-    if (socketRef.current) {
-      socketRef.current.emit("sendMessage", messageData);
+    if (socket) {
+        socket.emit("sendMessage", messageData);
     } else {
         console.error("Socket is not connected");
     }
