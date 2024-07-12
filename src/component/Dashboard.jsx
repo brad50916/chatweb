@@ -10,16 +10,16 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { MainListItems, SecondaryListItems } from "./listItems";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./Search";
 import ChatContent from "./ChatContent";
+import io from "socket.io-client";
 
 const drawerWidth = 240;
 
@@ -93,6 +93,27 @@ export default function Dashboard() {
   const [UserId, setUserId] = useState(null);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatRoomData, setChatRoomData] = useState([]);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    socketRef.current = io("http://localhost:5001");
+
+    socketRef.current.on('connect', () => {
+      console.log('Connected to the server');
+    });
+
+    socketRef.current.on('disconnect', () => {
+      console.log('Disconnected from the server');
+    });
+
+    // socketRef.current.on('receiveMessage', (message) => {
+    //   setMessages(prevMessages => [...prevMessages, message]);
+    // });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -145,6 +166,9 @@ export default function Dashboard() {
 
   const logout = () => {
     localStorage.removeItem("token");
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
     navigate("/signin");
   };
 
@@ -217,7 +241,11 @@ export default function Dashboard() {
           </List>
         </Drawer>
         {currentChatId ? (
-          <ChatContent UserId={UserId} currentChatId={currentChatId} />
+          <ChatContent
+            UserId={UserId}
+            currentChatId={currentChatId}
+            socketRef={socketRef}
+          />
         ) : (
           <Container
             sx={{

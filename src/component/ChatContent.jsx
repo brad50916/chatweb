@@ -1,15 +1,35 @@
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import TextInput from "./TextInput";
+// import TextInput from "./TextInput";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
 
-export default function ChatContent({ UserId, currentChatId }) {
+export default function ChatContent({ UserId, currentChatId, socketRef }) {
+  const [input, setInput] = useState("");
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+  };
+  const handleSendClick = () => {
+    const messageData = {
+      type: "textMessage",
+      userId: UserId, // replace with actual user ID
+      currentChatId: currentChatId, // replace with actual chat ID
+      text: input,
+    };
+    if (socketRef.current) {
+      socketRef.current.emit("sendMessage", messageData);
+    } else {
+        console.error("Socket is not connected");
+    }
+    setInput("");
+  };
+
   const data = new Array(10).fill("hello");
-  data[0] = UserId;
-  data[1] = currentChatId;
+
   return (
     <Container
       sx={{
@@ -38,8 +58,20 @@ export default function ChatContent({ UserId, currentChatId }) {
       </Box>
 
       <Stack direction="row" spacing={1} sx={{ mt: 2, mb: 2, bottom: 0 }}>
-        <TextInput text="Input" />
-        <Button variant="contained" endIcon={<SendIcon />}>
+        <TextField
+          label="Input"
+          sx={{
+            width: "100%",
+            maxWidth: "100%",
+          }}
+          value={input}
+          onChange={handleInputChange}
+        />
+        <Button
+          variant="contained"
+          endIcon={<SendIcon />}
+          onClick={handleSendClick}
+        >
           Send
         </Button>
       </Stack>
