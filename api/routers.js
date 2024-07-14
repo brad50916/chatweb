@@ -6,6 +6,16 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+router.get('/getMessage', async (req, res) => {
+    const chatId = req.query.chatId;
+    try {
+        const results = await pool.query('SELECT * FROM messages WHERE chat_id = $1 ORDER BY sent_at ASC' , [chatId]);
+        res.status(200).json(results.rows);
+    } catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
+
 router.get('/getAllChatRoomData', async (req, res) => {
     const userId = req.query.userId;
     try {

@@ -5,11 +5,23 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import TextField from "@mui/material/TextField";
 
-export default function ChatContent({ UserId, currentChatId, socket }) {
+export default function ChatContent({
+  UserId,
+  currentChatId,
+  socket,
+  messages,
+  setMessages,
+}) {
   const [input, setInput] = useState("");
+  const boxRef = useRef(null);
+  useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    }
+  }, [messages]);
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
@@ -20,15 +32,31 @@ export default function ChatContent({ UserId, currentChatId, socket }) {
       currentChatId: currentChatId, // replace with actual chat ID
       text: input,
     };
-    if (socket) {
-        socket.emit("sendMessage", messageData);
-    } else {
-        console.error("Socket is not connected");
-    }
+    socket.emit("sendMessage", messageData);
     setInput("");
   };
 
-  const data = new Array(10).fill("hello");
+  useEffect(() => {
+    const fetchChatRoomData = async () => {
+      if (currentChatId) {
+        try {
+          const response = await fetch(
+            `http://localhost:5001/getMessage?chatId=${currentChatId}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setMessages(data);
+          } else {
+            const data = await response.json();
+            console.log(data);
+          }
+        } catch (error) {
+          console.error("Error finding message:", error);
+        }
+      }
+    };
+    fetchChatRoomData();
+  }, [currentChatId]);
 
   return (
     <Container
@@ -42,6 +70,7 @@ export default function ChatContent({ UserId, currentChatId, socket }) {
       }}
     >
       <Box
+        ref={boxRef}
         sx={{
           border: "1px solid #c2c2d6",
           flexGrow: 1,
@@ -50,9 +79,9 @@ export default function ChatContent({ UserId, currentChatId, socket }) {
           borderRadius: 1,
         }}
       >
-        {data.map((item, index) => (
+        {messages.map((item, index) => (
           <Paper key={index} elevation={1} sx={{ p: 2, m: 2, width: 100 }}>
-            {item}
+            {item.content}
           </Paper>
         ))}
       </Box>

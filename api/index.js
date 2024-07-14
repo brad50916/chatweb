@@ -4,6 +4,7 @@ const app = express()
 const port = 5001
 const routes = require('./routers')
 const cors = require('cors')
+const pool = require('./db');
 const Server = require("socket.io");
 const http = require('http');
 const server = http.createServer(app);
@@ -17,17 +18,15 @@ const io = Server(server, {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('sendMessage', (message) => {
-    switch (message.type) {
-      case "textMessage":
-        const { userId, currentChatId, text } = message;
-        // Handle the chat message
-        console.log(`User ${userId} sent message to chat ${currentChatId}: ${text}`);
-        break;
-
-      default:
-        console.log("Unknown message type received");
-        break;
+  socket.on('sendMessage', async (message) => {
+    const { userId, currentChatId, text } = message;
+    try {
+      const query = 'INSERT INTO messages (chat_id, sender_id, content) VALUES ($1, $2, $3) RETURNING *';
+      const results = await pool.query(query, [currentChatId, userId, text]);
+      io.emit('receiveMessage', results.rows[0]);
+    }
+    catch (error) {
+      console.error('Error sending message:', error);
     }
   });
 

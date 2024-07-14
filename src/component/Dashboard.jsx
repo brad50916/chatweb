@@ -19,7 +19,7 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./Search";
 import ChatContent from "./ChatContent";
-import { SocketContext } from './SocketContext';
+import { SocketContext } from "./SocketContext";
 
 const drawerWidth = 240;
 
@@ -93,6 +93,8 @@ export default function Dashboard() {
   const [UserId, setUserId] = useState(null);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatRoomData, setChatRoomData] = useState([]);
+  const [messages, setMessages] = useState([]);
+
   const socket = useContext(SocketContext);
 
   useEffect(() => {
@@ -142,6 +144,17 @@ export default function Dashboard() {
       }
     };
     fetchChatRoomData();
+    if (socket) {
+      const handleReceiveMessage = (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      };
+
+      socket.on("receiveMessage", handleReceiveMessage);
+
+      return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+      };
+    }
   }, [currentChatId, UserId]);
 
   const logout = () => {
@@ -225,6 +238,8 @@ export default function Dashboard() {
             UserId={UserId}
             currentChatId={currentChatId}
             socket={socket}
+            messages={messages}
+            setMessages={setMessages}
           />
         ) : (
           <Container
