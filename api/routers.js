@@ -9,8 +9,23 @@ const saltRounds = 10;
 router.get('/getMessage', async (req, res) => {
     const chatId = req.query.chatId;
     try {
-        const results = await pool.query('SELECT * FROM messages WHERE chat_id = $1 ORDER BY sent_at ASC' , [chatId]);
+        const results = await pool.query('SELECT * FROM messages WHERE chat_id = $1 ORDER BY sent_at ASC', [chatId]);
         res.status(200).json(results.rows);
+    } catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
+
+router.get('/getToUserId', async (req, res) => {
+    const chatId = req.query.chatId;
+    const userId = req.query.userId;
+    try {
+        const results = await pool.query('SELECT * FROM chats WHERE chat_id = $1', [chatId]);
+        if (results.rows[0]['user1_id'] == userId) {
+            res.status(200).json(results.rows[0]['user2_id']);
+        } else {
+            res.status(200).json(results.rows[0]['user1_id']);
+        }
     } catch (error) {
         res.status(500).json({ error: error.toString() });
     }
@@ -23,7 +38,6 @@ router.get('/getAllChatRoomData', async (req, res) => {
         const checkQuery = 'SELECT * FROM chats WHERE (user1_id = $1) OR (user2_id = $1)';
         const checkResults = await pool.query(checkQuery, [userId]);
         if (checkResults.rows.length > 0) {
-            // console.log(checkResults.rows);
             return res.status(200).json(checkResults.rows);
         } else {
             return res.status(404).json({ message: 'No chat room found' });

@@ -29,7 +29,10 @@ export function MainListItems({ chatRoomData, UserId, setCurrentChatId }) {
           );
         }
         return (
-          <ListItemButton key={index}>
+          <ListItemButton
+            key={index}
+            onClick={() => setCurrentChatId(item.chat_id)}
+          >
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>

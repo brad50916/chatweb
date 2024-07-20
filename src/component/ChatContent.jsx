@@ -16,6 +16,7 @@ export default function ChatContent({
   setMessages,
 }) {
   const [input, setInput] = useState("");
+  const [toUserId, setToUserId] = useState("");
   const boxRef = useRef(null);
   useEffect(() => {
     if (boxRef.current) {
@@ -28,9 +29,10 @@ export default function ChatContent({
   const handleSendClick = () => {
     const messageData = {
       type: "textMessage",
-      userId: UserId, // replace with actual user ID
-      currentChatId: currentChatId, // replace with actual chat ID
+      userId: UserId, 
+      currentChatId: currentChatId,
       text: input,
+      toUserId: toUserId
     };
     socket.emit("sendMessage", messageData);
     setInput("");
@@ -55,7 +57,26 @@ export default function ChatContent({
         }
       }
     };
+    const fetchToUserId = async () => {
+      if (currentChatId) {
+        try {
+          const response = await fetch(
+            `http://localhost:5001/getToUserId?chatId=${currentChatId}&userId=${UserId}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setToUserId(data);
+          } else {
+            const data = await response.json();
+            console.log(data);
+          }
+        } catch (error) {
+          console.error("Error finding message:", error);
+        }
+      }
+    };
     fetchChatRoomData();
+    fetchToUserId();
   }, [currentChatId]);
 
   return (

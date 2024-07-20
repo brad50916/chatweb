@@ -125,7 +125,22 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const fetchChatRoomData = async () => {
+    if (UserId) {
+      socket.emit("register", UserId);
+      const handleReceiveMessage = (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      };
+
+      socket.on("receiveMessage", handleReceiveMessage);
+
+      return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+      };
+    }
+  }, [UserId]);
+
+  useEffect(() => {
+    const fetchAllChatRoomData = async () => {
       if (UserId) {
         try {
           const response = await fetch(
@@ -143,19 +158,8 @@ export default function Dashboard() {
         }
       }
     };
-    fetchChatRoomData();
-    if (socket) {
-      const handleReceiveMessage = (newMessage) => {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      };
-
-      socket.on("receiveMessage", handleReceiveMessage);
-
-      return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-      };
-    }
-  }, [currentChatId, UserId]);
+    fetchAllChatRoomData();
+  }, [UserId]);
 
   const logout = () => {
     localStorage.removeItem("token");
