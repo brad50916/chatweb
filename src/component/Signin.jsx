@@ -80,7 +80,8 @@ export default function SignInSide() {
       if (response.ok) {
         const result = await response.json();
         localStorage.setItem('token', result.token);
-        console.log(1, result.message, result.user_id);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        console.log(1, result.message, result.user.id);
         // Redirect to profile or any other page after successful login
         navigate('/dashboard');
       } else {

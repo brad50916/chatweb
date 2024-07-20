@@ -2,14 +2,10 @@ import * as React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Box from "@mui/material/Box";
+import { useNavigate } from 'react-router-dom';
 
 export function MainListItems({
   chatRoomData,
@@ -18,7 +14,7 @@ export function MainListItems({
   setChatReloadTrigger,
 }) {
   return (
-    <Box sx={{ overflow: "auto", height: 280 }}>
+    <Box sx={{ overflow: "auto", height: 380 }}>
       {chatRoomData.map((item, index) => {
         if (item.user1_id === UserId) {
           return (
@@ -53,22 +49,23 @@ export function MainListItems({
 }
 
 export function SecondaryListItems({ onClickHandler }) {
+  const navigate = useNavigate();
   return (
     <React.Fragment>
-      <ListSubheader component="div" inset>
+      {/* <ListSubheader component="div" inset>
         Saved reports
-      </ListSubheader>
-      <ListItemButton>
+      </ListSubheader> */}
+      <ListItemButton onClick={() => navigate('/profile')}>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Current month" />
+        <ListItemText primary="Profile" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Last quarter" />
+        <ListItemText primary="Setting" />
       </ListItemButton>
       <ListItemButton onClick={onClickHandler}>
         <ListItemIcon>

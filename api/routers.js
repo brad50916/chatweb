@@ -94,7 +94,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ message: 'Auth token is not provided' });
     }
     try {
-        const decoded = jwt.verify(token, JWT_SECRET); // Replace with your secret key
+        const decoded = jwt.verify(token, JWT_SECRET); 
         req.userId = decoded.id;
         next(); // Move to next middleware
     } catch (error) {
@@ -125,7 +125,7 @@ router.post('/login', async (req, res) => {
         }
         console.log("authenticate successfully");
         const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ token: token, message: 'Login successfully', user_id: user.id });
+        res.status(200).json({ token: token, message: 'Login successfully', user: user });
     } catch (error) {
         console.log(error);
     }

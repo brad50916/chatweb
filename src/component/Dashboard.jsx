@@ -87,7 +87,7 @@ const defaultTheme = createTheme({
   },
 });
 
-export default function Dashboard() {
+export default function Dashboard({user, setUser}) {
   const navigate = useNavigate();
 
   const [UserId, setUserId] = useState(null);
@@ -163,6 +163,7 @@ export default function Dashboard() {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     if (socket) {
       socket.disconnect();
     }
