@@ -11,7 +11,12 @@ import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Box from "@mui/material/Box";
 
-export function MainListItems({ chatRoomData, UserId, setCurrentChatId }) {
+export function MainListItems({
+  chatRoomData,
+  UserId,
+  setCurrentChatId,
+  setChatReloadTrigger,
+}) {
   return (
     <Box sx={{ overflow: "auto", height: 280 }}>
       {chatRoomData.map((item, index) => {
@@ -19,7 +24,10 @@ export function MainListItems({ chatRoomData, UserId, setCurrentChatId }) {
           return (
             <ListItemButton
               key={index}
-              onClick={() => setCurrentChatId(item.chat_id)}
+              onClick={() => {
+                setCurrentChatId(item.chat_id);
+                setChatReloadTrigger((prev) => !prev);
+              }}
             >
               <ListItemIcon>
                 <DashboardIcon />

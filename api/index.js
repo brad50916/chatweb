@@ -21,7 +21,6 @@ io.on('connection', (socket) => {
 
   socket.on('register', (userId) => {
     users[userId] = socket.id;
-    console.log(`User registered: ${userId}`);
   });
 
   socket.on('sendMessage', async (message) => {

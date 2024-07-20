@@ -94,7 +94,7 @@ export default function Dashboard() {
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatRoomData, setChatRoomData] = useState([]);
   const [messages, setMessages] = useState([]);
-
+  const [chatReloadTrigger, setChatReloadTrigger] = useState(false);
   const socket = useContext(SocketContext);
 
   useEffect(() => {
@@ -232,6 +232,7 @@ export default function Dashboard() {
               chatRoomData={chatRoomData}
               UserId={UserId}
               setCurrentChatId={setCurrentChatId}
+              setChatReloadTrigger={setChatReloadTrigger}
             />
             <Divider sx={{ my: 1 }} />
             <SecondaryListItems onClickHandler={logout} />
@@ -244,6 +245,7 @@ export default function Dashboard() {
             socket={socket}
             messages={messages}
             setMessages={setMessages}
+            chatReloadTrigger={chatReloadTrigger}
           />
         ) : (
           <Container

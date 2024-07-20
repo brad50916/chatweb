@@ -14,6 +14,7 @@ export default function ChatContent({
   socket,
   messages,
   setMessages,
+  chatReloadTrigger,
 }) {
   const [input, setInput] = useState("");
   const [toUserId, setToUserId] = useState("");
@@ -77,7 +78,7 @@ export default function ChatContent({
     };
     fetchChatRoomData();
     fetchToUserId();
-  }, [currentChatId]);
+  }, [currentChatId, chatReloadTrigger]);
 
   return (
     <Container
