@@ -16,6 +16,17 @@ router.get('/getMessage', async (req, res) => {
     }
 });
 
+router.get('/getUserName', async (req, res) => {
+    const userId = req.query.userId;
+    try {
+        const results = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+        res.status(200).json(results.rows[0]['username']);
+    } catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
+
+
 router.get('/getToUserId', async (req, res) => {
     const chatId = req.query.chatId;
     const userId = req.query.userId;
