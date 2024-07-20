@@ -30,10 +30,10 @@ export default function ChatContent({
   const handleSendClick = () => {
     const messageData = {
       type: "textMessage",
-      userId: UserId, 
+      userId: UserId,
       currentChatId: currentChatId,
       text: input,
-      toUserId: toUserId
+      toUserId: toUserId,
     };
     socket.emit("sendMessage", messageData);
     setInput("");
@@ -102,9 +102,21 @@ export default function ChatContent({
         }}
       >
         {messages.map((item, index) => (
-          <Paper key={index} elevation={1} sx={{ p: 2, m: 2, width: 100 }}>
-            {item.content}
-          </Paper>
+          <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              justifyContent: item.sender_id === UserId ? 'flex-end' : 'flex-start',
+              p: 1,
+            }}
+          >
+            <Paper
+              elevation={3}
+              sx={{ p: 2, m: 2, maxWidth: '70%' }}
+            >
+              {item.content}
+            </Paper>
+          </Box>
         ))}
       </Box>
 
