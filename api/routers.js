@@ -60,6 +60,16 @@ router.get('/getAllChatRoomData', async (req, res) => {
     }
 });
 
+router.post('/modifyUserInfo', async (req, res) => {
+    const { id, firstname, lastname, username } = req.body;
+    try {
+        const query = 'UPDATE users SET firstname = $1, lastname = $2, username = $3 WHERE id = $4 RETURNING *';
+        const results = await pool.query(query, [firstname, lastname, username, id]);
+        res.status(200).json(results.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
 
 router.post('/getChatRoomId', async (req, res) => {
     const { user_id, friend_id } = req.body;
