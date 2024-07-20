@@ -19,6 +19,7 @@ export default function ChatContent({
   const [input, setInput] = useState("");
   const [toUserId, setToUserId] = useState("");
   const boxRef = useRef(null);
+  const buttonRef = useRef(null);
   useEffect(() => {
     if (boxRef.current) {
       boxRef.current.scrollTop = boxRef.current.scrollHeight;
@@ -26,6 +27,11 @@ export default function ChatContent({
   }, [messages]);
   const handleInputChange = (event) => {
     setInput(event.target.value);
+  };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      buttonRef.current.click();
+    }
   };
   const handleSendClick = () => {
     const messageData = {
@@ -129,11 +135,13 @@ export default function ChatContent({
           }}
           value={input}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
         <Button
           variant="contained"
           endIcon={<SendIcon />}
           onClick={handleSendClick}
+          ref={buttonRef}
         >
           Send
         </Button>
