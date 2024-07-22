@@ -5,7 +5,42 @@ const JWT_SECRET = 'cutecat';
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
+router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
+    const file = req.file;
+    const userId = req.body.userId; // Correct way to access userId
+
+    if (!file) {
+        return res.status(400).json({ error: 'No file uploaded.' }); // Send JSON response
+    }
+
+    try {
+        await pool.query('DELETE FROM user_avatars WHERE user_id = $1', [userId]);
+        const query = 'INSERT INTO user_avatars (user_id, avatar) VALUES ($1, $2) RETURNING *';
+        const values = [userId, file.buffer];
+        const result = await pool.query(query, values);
+
+        res.status(200).json(result.rows[0]); // Send JSON response
+    } catch (error) {
+        console.error('Error saving avatar:', error);
+        res.status(500).json({ error: 'Error saving avatar.' }); // Send JSON response
+    }
+});
+
+
+router.post('/modifyUserInfo', async (req, res) => {
+    const { id, firstname, lastname, username } = req.body;
+    try {
+        const query = 'UPDATE users SET firstname = $1, lastname = $2, username = $3 WHERE id = $4 RETURNING *';
+        const results = await pool.query(query, [firstname, lastname, username, id]);
+        res.status(200).json(results.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
 router.get('/getMessage', async (req, res) => {
     const chatId = req.query.chatId;
     try {
@@ -60,16 +95,7 @@ router.get('/getAllChatRoomData', async (req, res) => {
     }
 });
 
-router.post('/modifyUserInfo', async (req, res) => {
-    const { id, firstname, lastname, username } = req.body;
-    try {
-        const query = 'UPDATE users SET firstname = $1, lastname = $2, username = $3 WHERE id = $4 RETURNING *';
-        const results = await pool.query(query, [firstname, lastname, username, id]);
-        res.status(200).json(results.rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: error.toString() });
-    }
-});
+
 
 router.post('/getChatRoomId', async (req, res) => {
     const { user_id, friend_id } = req.body;
@@ -115,7 +141,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ message: 'Auth token is not provided' });
     }
     try {
-        const decoded = jwt.verify(token, JWT_SECRET); 
+        const decoded = jwt.verify(token, JWT_SECRET);
         req.userId = decoded.id;
         next(); // Move to next middleware
     } catch (error) {
