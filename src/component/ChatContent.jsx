@@ -38,7 +38,11 @@ export default function ChatContent({
     socket.emit("sendMessage", messageData);
     setInput("");
   };
-
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSendClick();
+    }
+  };
   useEffect(() => {
     const fetchChatRoomData = async () => {
       if (currentChatId) {
@@ -129,6 +133,7 @@ export default function ChatContent({
           }}
           value={input}
           onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
         />
         <Button
           variant="contained"
