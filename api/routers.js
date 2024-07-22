@@ -6,30 +6,90 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const multer = require('multer');
-const storage = multer.memoryStorage();
+const path = require('path');
+const fs = require('fs');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const uploadDir = 'Avatars/';
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
 const upload = multer({ storage: storage });
 
 router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
     const file = req.file;
-    const userId = req.body.userId; // Correct way to access userId
+    const userId = req.body.userId;
 
     if (!file) {
-        return res.status(400).json({ error: 'No file uploaded.' }); // Send JSON response
+        return res.status(400).json({ error: 'No file uploaded.' });
     }
 
+    const fileUrl = `Avatars/${file.filename}`;
+
     try {
-        await pool.query('DELETE FROM user_avatars WHERE user_id = $1', [userId]);
-        const query = 'INSERT INTO user_avatars (user_id, avatar) VALUES ($1, $2) RETURNING *';
-        const values = [userId, file.buffer];
+        const oldAvatarQuery = 'SELECT url FROM users WHERE id = $1';
+        const oldAvatarResult = await pool.query(oldAvatarQuery, [userId]);
+
+        if (oldAvatarResult.rows.length > 0) {
+            const oldAvatarUrl = oldAvatarResult.rows[0].url;
+            if (oldAvatarUrl) {
+                const oldFilePath = path.join(__dirname, 'Avatars', path.basename(oldAvatarUrl));
+                if (fs.existsSync(oldFilePath)) {
+                  fs.unlinkSync(oldFilePath);
+                }
+              }
+
+        }
+        const query = 'UPDATE users SET url = $1 WHERE id = $2 RETURNING *';
+        const values = [fileUrl, userId];
         const result = await pool.query(query, values);
 
-        res.status(200).json(result.rows[0]); // Send JSON response
+        res.status(200).json(result.rows[0]);
     } catch (error) {
         console.error('Error saving avatar:', error);
-        res.status(500).json({ error: 'Error saving avatar.' }); // Send JSON response
+        res.status(500).json({ error: 'Error saving avatar.' });
     }
 });
 
+router.get('/users/:userId/avatar', async (req, res) => {
+    const userId = req.params.userId;
+  
+    try {
+      const query = 'SELECT url FROM users WHERE id = $1';
+      const result = await pool.query(query, [userId]);
+
+      if (result.rows.length > 0) {
+        const avatarUrl = result.rows[0].url;
+  
+        if (avatarUrl) {
+          const filePath = path.join(__dirname, 'Avatars', path.basename(avatarUrl));
+  
+          if (fs.existsSync(filePath)) {
+            res.sendFile(filePath);
+          } else {
+            res.status(404).json({ error: 'File not found' });
+          }
+        } else {
+          res.status(404).json({ error: 'No avatar URL found for user' });
+        }
+      } else {
+        res.status(404).json({ error: 'User not found' });
+      }
+    } catch (error) {
+      console.error('Error fetching avatar:', error);
+      res.status(500).json({ error: 'Error fetching avatar.' });
+    }
+  });
+  
+  
 
 router.post('/modifyUserInfo', async (req, res) => {
     const { id, firstname, lastname, username } = req.body;
