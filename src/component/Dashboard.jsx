@@ -93,6 +93,7 @@ export default function Dashboard({user, setUser}) {
   const [UserId, setUserId] = useState(null);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatRoomData, setChatRoomData] = useState([]);
+  const [chatRoomAvatar, setChatRoomAvatar] = useState([]);
   const [messages, setMessages] = useState([]);
   const [chatReloadTrigger, setChatReloadTrigger] = useState(false);
   const socket = useContext(SocketContext);
