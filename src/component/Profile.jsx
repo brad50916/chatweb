@@ -10,12 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modify from "./Modify";
 import Avatar from "./Avatar";
+import webpImage from '../assets/default.webp';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [openModify, setOpenModify] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(webpImage);
   const navigate = useNavigate();
 
   // Load user data from localStorage on component mount
@@ -112,7 +113,6 @@ const Profile = () => {
                   display: "flex", // Enables flexbox layout
                   justifyContent: "center", // Centers the image horizontally
                   alignItems: "center", // Centers the image vertically
-                  backgroundColor: "#f0f0f0", // Optional: Background color
                   mr: 2, // Margin-right to space out the image from the text
                 }}
               >

@@ -7,6 +7,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import webpImage from "../assets/default.webp";
 
 const fetchUserName = async (userId) => {
   try {
@@ -37,7 +38,7 @@ const fetchAvatar = async (userId) => {
       const url = URL.createObjectURL(blob);
       return url;
     } else {
-      return null;
+      return webpImage;
     }
   } catch (err) {
     console.error("Fetch error:", err);
@@ -81,14 +82,12 @@ const ChatListItem = ({
         }}
       >
         <ListItemIcon>
-          {user2avatarUrl ? (
+          {user2avatarUrl && (
             <img
               src={user2avatarUrl}
               alt="avatar"
               style={{ width: 40, height: 40, borderRadius: "50%" }}
             />
-          ) : (
-            <DashboardIcon />
           )}
         </ListItemIcon>
         <ListItemText primary={user2Username} />
@@ -99,14 +98,12 @@ const ChatListItem = ({
   return (
     <ListItemButton onClick={() => setCurrentChatId(item.chat_id)}>
       <ListItemIcon>
-        {user1avatarUrl ? (
+        {user1avatarUrl && (
           <img
             src={user1avatarUrl}
             alt="avatar"
             style={{ width: 40, height: 40, borderRadius: "50%" }}
           />
-        ) : (
-          <DashboardIcon />
         )}
       </ListItemIcon>
       <ListItemText primary={user1Username} />
