@@ -3,13 +3,14 @@ on:
   push:
     branches:
       - main
+
 jobs:
   web-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -17,6 +18,11 @@ jobs:
 
       - name: Install pnpm
         run: npm install -g pnpm
+
+      - name: Set Git user
+        run: |
+          git config --global user.email "brad50916@gmail.com"
+          git config --global user.name "Tien-Hung Hsiao"
 
       - name: Build Project
         run: |
