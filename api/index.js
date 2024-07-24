@@ -1,9 +1,9 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
-const port = 5001
-const routes = require('./routers')
-const cors = require('cors')
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const port = 5001 || process.env.PORT;
+const routes = require('./routers');
+const cors = require('cors');
 const pool = require('./db');
 const Server = require("socket.io");
 const http = require('http');
