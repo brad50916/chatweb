@@ -47,3 +47,6 @@ jobs:
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
           pnpm run deploy 
 
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
+
