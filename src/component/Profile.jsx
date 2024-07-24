@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modify from "./Modify";
 import Avatar from "./Avatar";
-import webpImage from '../assets/default.webp';
+import webpImage from '/default.webp';
 
 const Profile = () => {
   const [user, setUser] = useState(null);

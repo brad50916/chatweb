@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import webpImage from "../assets/default.webp";
+import webpImage from "/default.webp";
 
 const fetchUserName = async (userId) => {
   try {
