@@ -5,7 +5,7 @@
   "homepage": "https://brad50916.github.io/chatweb",
   "type": "module",
   "scripts": {
-    "deploy": "gh-pages -d list",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
