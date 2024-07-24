@@ -2,8 +2,10 @@ import * as React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Person2Icon from '@mui/icons-material/Person2';
+import SettingsIcon from '@mui/icons-material/Settings';
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -141,19 +143,19 @@ export function SecondaryListItems({ onClickHandler }) {
       </ListSubheader> */}
       <ListItemButton onClick={() => navigate("/profile")}>
         <ListItemIcon>
-          <AssignmentIcon />
+          <Person2Icon />
         </ListItemIcon>
         <ListItemText primary="Profile" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <AssignmentIcon />
+          <SettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Setting" />
       </ListItemButton>
       <ListItemButton onClick={onClickHandler}>
         <ListItemIcon>
-          <AssignmentIcon />
+          <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>

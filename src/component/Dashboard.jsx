@@ -87,13 +87,13 @@ const defaultTheme = createTheme({
   },
 });
 
-export default function Dashboard({user, setUser}) {
+export default function Dashboard() {
   const navigate = useNavigate();
 
   const [UserId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatRoomData, setChatRoomData] = useState([]);
-  const [chatRoomAvatar, setChatRoomAvatar] = useState([]);
   const [messages, setMessages] = useState([]);
   const [chatReloadTrigger, setChatReloadTrigger] = useState(false);
   const socket = useContext(SocketContext);
@@ -159,7 +159,27 @@ export default function Dashboard({user, setUser}) {
         }
       }
     };
+    const fetchUserName = async () => {
+      if (UserId) {
+        try {
+          const response = await fetch(
+            `http://localhost:5001/getUserName?userId=${UserId}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setUserName(data);
+          } else {
+            const data = await response.json();
+            console.log(data);
+          }
+        } catch (error) {
+          console.error("Error finding message:", error);
+        }
+        return null;
+      }
+    };
     fetchAllChatRoomData();
+    fetchUserName();
   }, [UserId]);
 
   const logout = () => {
@@ -260,7 +280,7 @@ export default function Dashboard({user, setUser}) {
             }}
           >
             <Typography variant="h5" component="div">
-              Welcome! Please select a chat to start messaging.
+              Welcome {userName}! Please select a chat to start messaging.
             </Typography>
           </Container>
         )}

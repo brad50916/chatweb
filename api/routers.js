@@ -43,9 +43,9 @@ router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
             if (oldAvatarUrl) {
                 const oldFilePath = path.join(__dirname, 'Avatars', path.basename(oldAvatarUrl));
                 if (fs.existsSync(oldFilePath)) {
-                  fs.unlinkSync(oldFilePath);
+                    fs.unlinkSync(oldFilePath);
                 }
-              }
+            }
 
         }
         const query = 'UPDATE users SET url = $1 WHERE id = $2 RETURNING *';
@@ -61,35 +61,33 @@ router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
 
 router.get('/users/:userId/avatar', async (req, res) => {
     const userId = req.params.userId;
-  
-    try {
-      const query = 'SELECT url FROM users WHERE id = $1';
-      const result = await pool.query(query, [userId]);
 
-      if (result.rows.length > 0) {
-        const avatarUrl = result.rows[0].url;
-  
-        if (avatarUrl) {
-          const filePath = path.join(__dirname, 'Avatars', path.basename(avatarUrl));
-  
-          if (fs.existsSync(filePath)) {
-            res.sendFile(filePath);
-          } else {
-            res.status(404).json({ error: 'File not found' });
-          }
+    try {
+        const query = 'SELECT url FROM users WHERE id = $1';
+        const result = await pool.query(query, [userId]);
+
+        if (result.rows.length > 0) {
+            const avatarUrl = result.rows[0].url;
+
+            if (avatarUrl) {
+                const filePath = path.join(__dirname, 'Avatars', path.basename(avatarUrl));
+
+                if (fs.existsSync(filePath)) {
+                    res.sendFile(filePath);
+                } else {
+                    res.status(404).json({ error: 'File not found' });
+                }
+            } else {
+                res.status(404).json({ error: 'No avatar URL found for user' });
+            }
         } else {
-          res.status(404).json({ error: 'No avatar URL found for user' });
+            res.status(404).json({ error: 'User not found' });
         }
-      } else {
-        res.status(404).json({ error: 'User not found' });
-      }
     } catch (error) {
-      console.error('Error fetching avatar:', error);
-      res.status(500).json({ error: 'Error fetching avatar.' });
+        console.error('Error fetching avatar:', error);
+        res.status(500).json({ error: 'Error fetching avatar.' });
     }
-  });
-  
-  
+});
 
 router.post('/modifyUserInfo', async (req, res) => {
     const { id, firstname, lastname, username } = req.body;
