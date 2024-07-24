@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-            token: ${{ secrets.GH_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -20,11 +18,6 @@ jobs:
 
       - name: Install pnpm
         run: npm install -g pnpm
-
-      - name: Set Git user
-        run: |
-          git config --global user.email "brad50916@gmail.com"
-          git config --global user.name "Tien-Hung Hsiao"
 
       - name: Build Project
         run: |
