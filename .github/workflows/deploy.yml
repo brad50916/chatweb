@@ -1,13 +1,16 @@
-name: My Workflow
+name: Publish to GitHub Pages
 on:
   push:
     branches:
       - main
 jobs:
-  myJob:
+  web-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Build Project
+        run: |
+          pnpm install
+          pnpm run build
+          pnpm run deploy
