@@ -1,0 +1,16 @@
+name: Publish to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+jobs:
+  web-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Project
+        run: |
+          pnpm install
+          pnpm run build
+          pnpm run deploy
