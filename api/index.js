@@ -8,6 +8,7 @@ const pool = require('./db');
 const Server = require("socket.io");
 const http = require('http');
 const server = http.createServer(app);
+
 const io = Server(server, {
   cors: {
     origin: 'http://localhost:3000', // Replace with your client's domain
