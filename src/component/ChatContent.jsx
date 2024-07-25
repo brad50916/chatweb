@@ -7,7 +7,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { useState, useEffect, useRef } from "react";
 import TextField from "@mui/material/TextField";
-
+import { getMessages, getToUserId } from "./Api";
 export default function ChatContent({
   UserId,
   currentChatId,
@@ -47,15 +47,11 @@ export default function ChatContent({
     const fetchChatRoomData = async () => {
       if (currentChatId) {
         try {
-          const response = await fetch(
-            `http://localhost:5001/getMessage?chatId=${currentChatId}`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setMessages(data);
+          const result = getMessages(currentChatId);
+          if (result) {
+            setMessages(result);
           } else {
-            const data = await response.json();
-            console.log(data);
+            console.log('No messages found');
           }
         } catch (error) {
           console.error("Error finding message:", error);
@@ -65,15 +61,11 @@ export default function ChatContent({
     const fetchToUserId = async () => {
       if (currentChatId) {
         try {
-          const response = await fetch(
-            `http://localhost:5001/getToUserId?chatId=${currentChatId}&userId=${UserId}`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setToUserId(data);
+          const result = getToUserId(currentChatId, UserId);
+          if (result) {
+            setToUserId(result);
           } else {
-            const data = await response.json();
-            console.log(data);
+            console.log('No toUserId found');
           }
         } catch (error) {
           console.error("Error finding message:", error);
