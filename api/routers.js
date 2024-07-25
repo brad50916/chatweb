@@ -24,6 +24,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+router.get('/test', (req, res) => {
+    res.send('Hello World!');
+});
+
 router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
     const file = req.file;
     const userId = req.body.userId;

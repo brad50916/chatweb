@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 const io = Server(server, {
   cors: {
-    origin: 'http://localhost:3000', // Replace with your client's domain
+    origin: 'https://brad50916.github.io/chatweb/', // Replace with your client's domain
     methods: ['GET', 'POST'],
   },
 });
