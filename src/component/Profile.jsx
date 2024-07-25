@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Modify from "./Modify";
 import Avatar from "./Avatar";
 import webpImage from '/default.webp';
-
+import { verifyToken, getAvatar } from "./Api";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [openModify, setOpenModify] = useState(false);
@@ -32,12 +32,8 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch("http://localhost:5001/verify", {
-            headers: {
-              Authorization: token,
-            },
-          });
-          if (!response.ok) {
+          const result = await verifyToken(token);
+          if (!result) {
             navigate("/signin");
           }
         } catch (error) {
@@ -54,14 +50,9 @@ const Profile = () => {
     const fetchAvatar = async () => {
       if (user) {
         try {
-          const response = await fetch(
-            `http://localhost:5001/users/${user.id}/avatar`
-          );
-
-          if (response.ok) {
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            setAvatarUrl(url);
+          const result = await getAvatar(user.id);
+          if (result) {
+            setAvatarUrl(result);
           }
         } catch (err) {
           console.error("Fetch error:", err);
