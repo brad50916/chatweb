@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Modify from "./Modify";
 import Avatar from "./Avatar";
 import webpImage from '/default.webp';
-import { verifyToken, getAvatar } from "./Api";
+import { verifyToken, getAvatar } from "./Api.jsx";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [openModify, setOpenModify] = useState(false);

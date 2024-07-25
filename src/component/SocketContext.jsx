@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-import { API_URL } from "./Api";
+import { API_URL } from "./Api.jsx";
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {

@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import { signup } from './Api';
+import { signup } from './Api.jsx';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>

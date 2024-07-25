@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "./Search";
 import ChatContent from "./ChatContent";
 import { SocketContext } from "./SocketContext";
-import { verifyToken, getAllChatRoomData, getUserName } from "./Api";
+import { verifyToken, getAllChatRoomData, getUserName } from "./Api.jsx";
 const drawerWidth = 240;
 
 const StyledBadge = styled(Badge)(({ theme }) => ({

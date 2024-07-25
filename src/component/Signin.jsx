@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { verifyToken, login } from "./Api";
+import { verifyToken, login } from "./Api.jsx"; 
 const defaultTheme = createTheme();
 
 export default function SignInSide() {

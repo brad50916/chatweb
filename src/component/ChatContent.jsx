@@ -7,7 +7,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { useState, useEffect, useRef } from "react";
 import TextField from "@mui/material/TextField";
-import { getMessages, getToUserId } from "./Api";
+import { getMessages, getToUserId } from "./Api.jsx";
 export default function ChatContent({
   UserId,
   currentChatId,

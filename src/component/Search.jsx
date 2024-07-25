@@ -11,7 +11,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import { searchUser, getChatRoomId } from "./Api";
+import { searchUser, getChatRoomId } from "./Api.jsx";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",

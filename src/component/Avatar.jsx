@@ -1,6 +1,6 @@
 import { Box, Button, Typography, Input } from "@mui/material";
 import { useEffect, useState } from "react";
-import { uploadAvatar } from "./Api";
+import { uploadAvatar } from "./Api.jsx";
 const Avatar = ({ onClose, user, setUser }) => {
   const [file, setFile] = useState(null);
 

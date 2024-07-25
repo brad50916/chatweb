@@ -1,6 +1,6 @@
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { modifyUserInfo } from "./Api";
+import { modifyUserInfo } from "./Api.jsx";
 
 const Modify = ({ onClose, user, setUser }) => {
   const [formData, setFormData] = useState(user);

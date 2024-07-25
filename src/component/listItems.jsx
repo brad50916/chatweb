@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import webpImage from "/default.webp";
-import { getUserName, getAvatar } from "./Api";
+import { getUserName, getAvatar } from "./Api.jsx";
 
 const fetchAvatar = async (userId) => {
   try {
