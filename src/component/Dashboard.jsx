@@ -21,7 +21,6 @@ import SearchBar from "./Search";
 import ChatContent from "./ChatContent";
 import { SocketContext } from "./SocketContext";
 import { verifyToken, getAllChatRoomData, getUserName } from "./Api";
-import { get } from "../../api/routers";
 const drawerWidth = 240;
 
 const StyledBadge = styled(Badge)(({ theme }) => ({

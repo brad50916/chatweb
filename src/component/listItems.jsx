@@ -10,35 +10,14 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import webpImage from "/default.webp";
-
-const fetchUserName = async (userId) => {
-  try {
-    const response = await fetch(
-      `http://localhost:5001/getUserName?userId=${userId}`
-    );
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      const data = await response.json();
-      console.log(data);
-    }
-  } catch (error) {
-    console.error("Error finding message:", error);
-  }
-  return null;
-};
+import { getUserName, getAvatar } from "./Api";
 
 const fetchAvatar = async (userId) => {
   try {
-    const response = await fetch(
-      `http://localhost:5001/users/${userId}/avatar`
-    );
+    const result = getAvatar(userId);
 
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      return url;
+    if (result) {
+      return result;
     } else {
       return webpImage;
     }
@@ -60,8 +39,8 @@ const ChatListItem = ({
 
   useEffect(() => {
     const getUserNames = async () => {
-      const user1 = await fetchUserName(item.user1_id);
-      const user2 = await fetchUserName(item.user2_id);
+      const user1 = await getUserName(item.user1_id);
+      const user2 = await getUserName(item.user2_id);
       setUser1Username(user1);
       setUser2Username(user2);
     };
