@@ -47,7 +47,7 @@ export default function ChatContent({
     const fetchChatRoomData = async () => {
       if (currentChatId) {
         try {
-          const result = getMessages(currentChatId);
+          const result = await getMessages(currentChatId);
           if (result) {
             setMessages(result);
           } else {
@@ -61,7 +61,7 @@ export default function ChatContent({
     const fetchToUserId = async () => {
       if (currentChatId) {
         try {
-          const result = getToUserId(currentChatId, UserId);
+          const result = await getToUserId(currentChatId, UserId);
           if (result) {
             setToUserId(result);
           } else {

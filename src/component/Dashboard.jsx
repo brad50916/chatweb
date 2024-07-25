@@ -103,7 +103,7 @@ export default function Dashboard() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const result = verifyToken(token);
+          const result = await verifyToken(token);
           if (result) {
             setUserId(result);
           } else {
@@ -139,7 +139,7 @@ export default function Dashboard() {
     const fetchAllChatRoomData = async () => {
       if (UserId) {
         try {
-          const result = getAllChatRoomData(UserId);
+          const result = await getAllChatRoomData(UserId);
           if (result) {
             setChatRoomData(result);
           } else {
@@ -153,7 +153,7 @@ export default function Dashboard() {
     const fetchUserName = async () => {
       if (UserId) {
         try {
-          const result = getUserName(UserId);
+          const result = await getUserName(UserId);
           if (result) {
             setUserName(result);
           } else {

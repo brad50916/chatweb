@@ -14,7 +14,7 @@ import { getUserName, getAvatar } from "./Api";
 
 const fetchAvatar = async (userId) => {
   try {
-    const result = getAvatar(userId);
+    const result = await getAvatar(userId);
 
     if (result) {
       return result;

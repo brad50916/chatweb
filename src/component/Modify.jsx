@@ -1,6 +1,6 @@
 import { Box, TextField, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { modifyUserInfo } from "./Api";
 
 const Modify = ({ onClose, user, setUser }) => {
   const [formData, setFormData] = useState(user);
@@ -13,21 +13,13 @@ const Modify = ({ onClose, user, setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5001/modifyUserInfo`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
+      const result = await modifyUserInfo(formData);
+      if (result) {
+        localStorage.setItem("user", JSON.stringify(result));
+        setUser(result);
         onClose(); // Close the dialog on successful submit
       } else {
-        const data = await response.json();
-        console.log(data);
+        console.error("Error modifying user info");
       }
     } catch (error) {
       console.error("Error modifying user info:", error);
