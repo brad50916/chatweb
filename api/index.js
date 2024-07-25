@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 const io = Server(server, {
   cors: {
-    origin: 'https://brad50916.github.io', // Replace with your client's domain
+    origin: ['https://brad50916.github.io', 'http://localhost:3000'],
     methods: ['GET', 'POST'],
   },
 });
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
 });
 
 app.use(cors({
-  origin: 'https://brad50916.github.io',
+  origin: ['https://brad50916.github.io', 'http://localhost:3000'],
 }));
 app.use(bodyParser.json())
 app.use(
