@@ -1,13 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-
+import { URL } from "./Api";
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:5001");
+    const newSocket = io(URL);
 
     newSocket.on("connect", () => {});
 
