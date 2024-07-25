@@ -11,7 +11,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-
+import { searchUser, getChatRoomId } from "./Api";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -62,15 +62,11 @@ export default function SearchBar({ UserId, setCurrentChatId }) {
     const fetchData = async () => {
       if (username && username.length > 0) {
         try {
-          const response = await fetch(
-            `http://localhost:5001/search?username=${username}`
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+          const result = await searchUser(username);
+          if (!result) {
+            console.log("No user found");
           }
-          const data = await response.json();
-          setUserdata(data);
-          //   console.log(data.id);
+          setUserdata(result);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -98,25 +94,12 @@ export default function SearchBar({ UserId, setCurrentChatId }) {
 
   const handleChat = async () => {
     try {
-      const response = await fetch("http://localhost:5001/getChatRoomId", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: UserId,
-          friend_id: selectedUser.id,
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.message, data.chatId);
-        setCurrentChatId(data.chatId);
-        // Redirect to chat page
+      const result = await getChatRoomId(UserId, selectedUser.id);
+      if (result) {
+        console.log(result.message, result.chatId);
+        setCurrentChatId(result.chatId);
       } else {
-        const data = await response.json();
-        console.log(data.message, data.chatId);
-        setCurrentChatId(data.chatId);
+        console.log("Error creating chat");
       }
     } catch (error) {
       console.error("Error creating chat:", error);
