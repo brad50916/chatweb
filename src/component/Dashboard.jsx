@@ -20,7 +20,8 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "./Search";
 import ChatContent from "./ChatContent";
 import { SocketContext } from "./SocketContext";
-
+import { verifyToken, getAllChatRoomData, getUserName } from "./Api";
+import { get } from "../../api/routers";
 const drawerWidth = 240;
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -103,19 +104,14 @@ export default function Dashboard() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch("http://localhost:5001/verify", {
-            headers: {
-              Authorization: token,
-            },
-          });
-          if (response.ok) {
-            const data = await response.json();
-            console.log("token authenticated successfully");
-            setUserId(data.userId);
+          const result = verifyToken(token);
+          if (result) {
+            setUserId(result);
           } else {
             navigate("/signin");
           }
         } catch (error) {
+          console.error("Error verifying token:", error);
           navigate("/signin");
         }
       } else {
@@ -144,15 +140,11 @@ export default function Dashboard() {
     const fetchAllChatRoomData = async () => {
       if (UserId) {
         try {
-          const response = await fetch(
-            `http://localhost:5001/getAllChatRoomData?userId=${UserId}`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setChatRoomData(data);
+          const result = getAllChatRoomData(UserId);
+          if (result) {
+            setChatRoomData(result);
           } else {
-            const data = await response.json();
-            console.log(data);
+            console.log("No chat room data found");
           }
         } catch (error) {
           console.error("Error finding chat room ID:", error);
@@ -162,15 +154,11 @@ export default function Dashboard() {
     const fetchUserName = async () => {
       if (UserId) {
         try {
-          const response = await fetch(
-            `http://localhost:5001/getUserName?userId=${UserId}`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setUserName(data);
+          const result = getUserName(UserId);
+          if (result) {
+            setUserName(result);
           } else {
-            const data = await response.json();
-            console.log(data);
+            console.log("No user name found");
           }
         } catch (error) {
           console.error("Error finding message:", error);
