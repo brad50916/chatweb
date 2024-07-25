@@ -100,7 +100,8 @@ export default function SearchBar({ UserId, setCurrentChatId }) {
         console.log(result.message, result.chatId);
         setCurrentChatId(result.chatId);
       } else {
-        console.log("Error creating chat");
+        console.log(result.message, result.chatId);
+        setCurrentChatId(result.chatId);
       }
     } catch (error) {
       console.error("Error creating chat:", error);

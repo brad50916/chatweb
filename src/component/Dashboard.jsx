@@ -167,7 +167,7 @@ export default function Dashboard() {
     };
     fetchAllChatRoomData();
     fetchUserName();
-  }, [UserId]);
+  }, [UserId, currentChatId]);
 
   const logout = () => {
     localStorage.removeItem("token");
