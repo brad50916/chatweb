@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-
+import { signup } from './Api';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -40,17 +40,12 @@ export default function SignUp() {
       username: formData.get('username')
     };
     try {
-      const response = await fetch('http://localhost:5001/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json(); 
-      console.log(result.message, result.userId)
-      if (response.ok) {
+      const result = await signup(data);
+      if (result) {
+        console.log('sign up successfully');
         navigate('/signin');
+      } else {
+        console.log('sign up failed');
       }
     }
     catch (error) {
