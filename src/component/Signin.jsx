@@ -55,7 +55,6 @@ export default function SignInSide() {
       if (result) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.user));
-        console.log(1, result.message, result.user.id);
         navigate("/dashboard");
       } else {
         setErrorMessage("Email or password is incorrect.");

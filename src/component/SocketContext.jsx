@@ -1,13 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-import { URL } from "./Api";
+import { API_URL } from "./Api";
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(URL);
+    const newSocket = io(API_URL);
 
     newSocket.on("connect", () => {});
 
