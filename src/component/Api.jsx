@@ -21,7 +21,7 @@ export const verifyToken = async (token) => {
 
 export const login = async (payload) => {
   try {
-    const response = await fetch("http://localhost:5001/login", {
+    const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
