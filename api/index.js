@@ -19,7 +19,8 @@ const io = Server(server, {
 const users = {}; 
 
 io.on('connection', (socket) => {
-
+  console.log('connected');
+  
   socket.on('register', (userId) => {
     users[userId] = socket.id;
   });
@@ -67,7 +68,7 @@ io.on('connection', (socket) => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://brad50916.github.io/chatweb/',
 }));
 app.use(bodyParser.json())
 app.use(
