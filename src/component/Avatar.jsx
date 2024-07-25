@@ -1,7 +1,6 @@
 import { Box, Button, Typography, Input } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { uploadAvatar } from "./Api";
 const Avatar = ({ onClose, user, setUser }) => {
   const [file, setFile] = useState(null);
 
@@ -12,23 +11,14 @@ const Avatar = ({ onClose, user, setUser }) => {
   const handleUpload = async (event) => {
     event.preventDefault();
     if (file) {
-      const formData = new FormData();
-      formData.append("avatar", file);
-      formData.append("userId", user.id);
-
       try {
-        const response = await fetch("http://localhost:5001/upload-avatar", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          localStorage.setItem("user", JSON.stringify(data));
-          setUser(data);
+        const result = await uploadAvatar(file, user.id);
+        if (result) {
+          localStorage.setItem("user", JSON.stringify(result));
+          setUser(result);
           onClose();
         } else {
-          console.error("Error uploading file", response.statusText);
+          console.error("Error uploading file");
         }
       } catch (error) {
         console.error("Error uploading file", error);
