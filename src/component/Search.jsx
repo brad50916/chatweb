@@ -114,7 +114,7 @@ export default function SearchBar({ UserId, setCurrentChatId }) {
       <Autocomplete
         id="free-solo-demo"
         freeSolo
-        options={userdata}
+        options={userdata || []}
         getOptionLabel={(option) => option.username}
         value={value}
         renderInput={(params) => (
