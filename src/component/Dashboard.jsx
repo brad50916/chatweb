@@ -107,14 +107,14 @@ export default function Dashboard() {
           if (result) {
             setUserId(result);
           } else {
-            navigate("/signin");
+            navigate("/");
           }
         } catch (error) {
           console.error("Error verifying token:", error);
-          navigate("/signin");
+          navigate("/");
         }
       } else {
-        navigate("/signin");
+        navigate("/");
       }
     };
     fetchUserData();
@@ -175,7 +175,7 @@ export default function Dashboard() {
     if (socket) {
       socket.disconnect();
     }
-    navigate("/signin");
+    navigate("/");
   };
 
   const [open, setOpen] = React.useState(true);

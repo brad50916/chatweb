@@ -34,13 +34,13 @@ const Profile = () => {
         try {
           const result = await verifyToken(token);
           if (!result) {
-            navigate("/signin");
+            navigate("/");
           }
         } catch (error) {
-          navigate("/signin");
+          navigate("/");
         }
       } else {
-        navigate("/signin");
+        navigate("/");
       }
     };
     fetchUserData();

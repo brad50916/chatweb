@@ -29,13 +29,13 @@ export default function SignInSide() {
             console.log("token authenticated successfully");
             navigate("/dashboard");
           } else {
-            navigate("/signin");
+            navigate("/");
           }
         } catch (error) {
-          navigate("/signin");
+          navigate("/");
         }
       } else {
-        navigate("/signin");
+        navigate("/");
       }
     };
     fetchUserData();

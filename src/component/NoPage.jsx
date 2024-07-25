@@ -18,7 +18,7 @@ export default function NoPage() {
           The page you are looking for does not exist. Please check the URL or
           return to the homepage.
         </Typography>
-        <Button variant="contained" color="primary" component={RouterLink} to="/signin">
+        <Button variant="contained" color="primary" component={RouterLink} to="/">
           Go to Homepage
         </Button>
       </Box>
