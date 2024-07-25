@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 const io = Server(server, {
   cors: {
-    origin: 'https://brad50916.github.io/chatweb/', // Replace with your client's domain
+    origin: 'https://brad50916.github.io', // Replace with your client's domain
     methods: ['GET', 'POST'],
   },
 });
@@ -20,7 +20,7 @@ const users = {};
 
 io.on('connection', (socket) => {
   console.log('connected');
-  
+
   socket.on('register', (userId) => {
     users[userId] = socket.id;
   });
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
 });
 
 app.use(cors({
-  origin: 'https://brad50916.github.io/chatweb/',
+  origin: 'https://brad50916.github.io',
 }));
 app.use(bodyParser.json())
 app.use(
