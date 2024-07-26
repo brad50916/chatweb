@@ -47,17 +47,19 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
       ```
     - Create a `.env` file and add the following environment variables:
       ```env
-      PORT=5000
-      DATABASE_URL=your_database_url
-      JWT_SECRET=your_jwt_secret
+      DB_USER = your_database_user
+      DB_HOST = your_database_host
+      DB_NAME = your_database_name
+      DB_PASSWORD = your_database_password
+      DB_PORT = your_database_port
       ```
     - Run database migrations:
       ```sh
-      npx sequelize-cli db:migrate
+      pnpm sequelize-cli db:migrate
       ```
     - Start the backend server:
       ```sh
-      npm start
+      pnpm start
       ```
 
 3. **Frontend Setup**:
