@@ -24,10 +24,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get('/test', (req, res) => {
-    res.send('Hello World!');
-});
-
 router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
     const file = req.file;
     const userId = req.body.userId;
@@ -242,7 +238,6 @@ router.post('/login', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
     const { firstname, lastname, email, password, username } = req.body;
-    // console.log(firstname, lastname, email, password);
     const encrypted = await bcrypt.hash(password, saltRounds);
     try {
         const results = await pool.query('INSERT INTO users (firstname, lastname, email, password, username) VALUES ($1, $2, $3, $4, $5) RETURNING id',
