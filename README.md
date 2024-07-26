@@ -2,7 +2,7 @@
 
 This is a real-time chat application built using the PERN stack (PostgreSQL, Express.js, React.js, Node.js) and Material-UI (MUI). The application includes user authentication via JWT, user profile management, and instant messaging capabilities using Socket.io.
 
-[Live Demo](https://chat-app-mern-mo.netlify.app/) 
+[Live Demo](https://brad50916.github.io/chatweb/) 
 
 ## Features
 

@@ -39,7 +39,7 @@ export default function SignInSide() {
       }
     };
     fetchUserData();
-  }, [navigate]);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
