@@ -11,7 +11,7 @@ import { useState } from "react";
 function App() {
   return (
     <SocketProvider>
-      <HashRouter basename="/chatweb">
+      <HashRouter>
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<Signup />} />
