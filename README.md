@@ -39,7 +39,7 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
 2. **Backend Setup**:
     - Navigate to the `server` directory:
       ```sh
-      cd Server
+      cd server
       ```
     - Install dependencies:
       ```sh
@@ -69,15 +69,15 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
       ```
     - Install dependencies:
       ```sh
-      npm install
+      pnpm install
       ```
     - Create a `.env` file and add the following environment variables:
       ```env
-      REACT_APP_API_URL=http://localhost:5000
+      VITE_API_URL = http://localhost:5000
       ```
     - Start the frontend development server:
       ```sh
-      npm start
+      pnpm dev
       ```
 
 ## Usage
@@ -92,19 +92,6 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
 
 ## Project Structure
 
-## Contributing
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add new feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License.
-
 ## Contact
 
-For any questions or feedback, please contact [your-email@example.com].
+For any questions or feedback, please contact [brad50916@gmail.com].
