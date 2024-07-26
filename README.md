@@ -2,7 +2,7 @@
 
 This is a real-time chat application built using the PERN stack (PostgreSQL, Express.js, React.js, Node.js) and Material-UI (MUI). The application includes user authentication via JWT, user profile management, and instant messaging capabilities using Socket.io.
 
-[Live Demo](https://brad50916.github.io/chatweb/) 
+[Live Demo](https://brad50916.github.io/chatweb/#/) 
 
 ## Features
 
@@ -32,14 +32,14 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/your-username/chat-app.git
-    cd chat-app
+    git clone https://github.com/brad50916/chatweb.git
+    cd chatweb
     ```
 
 2. **Backend Setup**:
     - Navigate to the `server` directory:
       ```sh
-      cd server
+      cd Server
       ```
     - Install dependencies:
       ```sh
