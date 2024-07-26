@@ -30,6 +30,7 @@ jobs:
 
       - name: Build Project
         run: |
+          cd client
           pnpm install
           pnpm run build
           
