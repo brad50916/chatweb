@@ -78,6 +78,6 @@ app.use(
 )
 app.use('/', routes)
 
-server.listen(port, () => {
+server.listen(port, '0.0.0.0', () => {
   console.log(`App running on port ${port}.`)
 })
