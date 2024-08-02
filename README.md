@@ -52,6 +52,7 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
       DB_NAME = your_database_name
       DB_PASSWORD = your_database_password
       DB_PORT = your_database_port
+      GITHUB_CLIENT_URL = your_frontend_address
       ```
     - Run database migrations:
       ```sh
@@ -73,7 +74,7 @@ This is a real-time chat application built using the PERN stack (PostgreSQL, Exp
       ```
     - Create a `.env` file and add the following environment variables:
       ```env
-      VITE_API_URL = http://localhost:5000
+      VITE_API_URL = http://localhost:3000
       ```
     - Start the frontend development server:
       ```sh
