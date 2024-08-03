@@ -2,7 +2,6 @@ import * as React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import LogoutIcon from '@mui/icons-material/Logout';
 import Person2Icon from '@mui/icons-material/Person2';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -99,7 +98,7 @@ export function MainListItems({
   setChatReloadTrigger,
 }) {
   return (
-    <Box sx={{ overflow: "auto", height: 380 }}>
+    <Box sx={{ overflow: "auto", height: '71.5vh' }}>
       {chatRoomData.map((item, index) => (
         <ChatListItem
           key={index}

@@ -215,7 +215,7 @@ export default function Dashboard() {
             </Typography>
             <SearchBar UserId={UserId} setCurrentChatId={setCurrentChatId} />
             <IconButton color="inherit">
-              <StyledBadge badgeContent={5} color="primary">
+              <StyledBadge badgeContent={0} color="primary">
                 <NotificationsIcon />
               </StyledBadge>
             </IconButton>
