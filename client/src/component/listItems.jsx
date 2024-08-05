@@ -84,7 +84,7 @@ export function MainListItems({
   setChatReloadTrigger,
 }) {
   return (
-    <Box sx={{ overflow: "auto", height: '71.5vh' }}>
+    <Box sx={{ overflow: "auto", height: '59vh' }}>
       {chatRoomData.map((item, index) => (
         <ChatListItem
           key={index}

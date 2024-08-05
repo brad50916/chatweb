@@ -77,11 +77,7 @@ export default function ChatContent({
     const fetchUserAvatar = async () => {
       try {
         const result = await getAvatar(UserId);
-        if (result) {
-          setUserAvatar(result);
-        } else {
-          console.log("No avatar found");
-        }
+        setUserAvatar(result);
       } catch (error) {
         console.error("Error finding avatar:", error);
       }
@@ -95,11 +91,7 @@ export default function ChatContent({
     const fetchToUserAvatar = async () => {
       try {
         const result = await getAvatar(toUserId);
-        if (result) {
-          setToUserAvatar(result);
-        } else {
-          console.log("No avatar found");
-        }
+        setToUserAvatar(result);
       } catch (error) {
         console.error("Error finding avatar:", error);
       }
