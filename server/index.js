@@ -19,7 +19,7 @@ const io = Server(server, {
 const users = {}; 
 
 io.on('connection', (socket) => {
-  console.log('connected');
+  // console.log('connected');
 
   socket.on('register', (userId) => {
     users[userId] = socket.id;
@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
         console.error('Error sending message:', error);
       }
     } else {
-      console.log(`User ${toUserId} not connected`);
+      // console.log(`User ${toUserId} not connected`);
       try {
         const query = 'INSERT INTO messages (chat_id, sender_id, content) VALUES ($1, $2, $3) RETURNING *';
         const results = await pool.query(query, [currentChatId, userId, text]);
@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    // console.log('user disconnected');
     for (let userId in users) {
       if (users[userId] === socket.id) {
         delete users[userId];
