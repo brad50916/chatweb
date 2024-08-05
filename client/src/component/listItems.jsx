@@ -8,22 +8,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import webpImage from "/default.webp";
 import { getUserName, getAvatar } from "./Api.jsx";
 
-const fetchAvatar = async (userId) => {
-  try {
-    const result = await getAvatar(userId);
-
-    if (result) {
-      return result;
-    } else {
-      return webpImage;
-    }
-  } catch (err) {
-    console.error("Fetch error:", err);
-  }
-};
 
 const ChatListItem = ({
   item,
@@ -44,8 +30,8 @@ const ChatListItem = ({
       setUser2Username(user2);
     };
     const getUserAvatars = async () => {
-      const user1 = await fetchAvatar(item.user1_id);
-      const user2 = await fetchAvatar(item.user2_id);
+      const user1 = await getAvatar(item.user1_id);
+      const user2 = await getAvatar(item.user2_id);
       setUser1AvatarUrl(user1);
       setUser2AvatarUrl(user2);
     };

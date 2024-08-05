@@ -1,13 +1,15 @@
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-// import TextInput from "./TextInput";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { useState, useEffect, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import { getMessages, getToUserId } from "./Api.jsx";
+import { getAvatar } from "./Api.jsx";
+
 export default function ChatContent({
   UserId,
   currentChatId,
@@ -18,6 +20,8 @@ export default function ChatContent({
 }) {
   const [input, setInput] = useState("");
   const [toUserId, setToUserId] = useState("");
+  const [userAvatar, setUserAvatar] = useState(null);
+  const [toUserAvatar, setToUserAvatar] = useState(null);
   const boxRef = useRef(null);
   useEffect(() => {
     if (boxRef.current) {
@@ -39,42 +43,71 @@ export default function ChatContent({
     setInput("");
   };
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSendClick();
     }
   };
   useEffect(() => {
     const fetchChatRoomData = async () => {
-      if (currentChatId) {
-        try {
-          const result = await getMessages(currentChatId);
-          if (result) {
-            setMessages(result);
-          } else {
-            console.log('No messages found');
-          }
-        } catch (error) {
-          console.error("Error finding message:", error);
+      try {
+        const result = await getMessages(currentChatId);
+        if (result) {
+          setMessages(result);
+        } else {
+          console.log("No messages found");
         }
+      } catch (error) {
+        console.error("Error finding message:", error);
       }
     };
+
     const fetchToUserId = async () => {
-      if (currentChatId) {
-        try {
-          const result = await getToUserId(currentChatId, UserId);
-          if (result) {
-            setToUserId(result);
-          } else {
-            console.log('No toUserId found');
-          }
-        } catch (error) {
-          console.error("Error finding message:", error);
+      try {
+        const result = await getToUserId(currentChatId, UserId);
+        if (result) {
+          setToUserId(result);
+        } else {
+          console.log("No toUserId found");
         }
+      } catch (error) {
+        console.error("Error finding message:", error);
+      }
+    };
+
+    const fetchUserAvatar = async () => {
+      try {
+        console.log(1, UserId);
+        const result = await getAvatar(UserId);
+        if (result) {
+          setUserAvatar(result);
+        } else {
+          console.log("No avatar found");
+        }
+      } catch (error) {
+        console.error("Error finding avatar:", error);
       }
     };
     fetchChatRoomData();
     fetchToUserId();
+    fetchUserAvatar();
   }, [currentChatId, chatReloadTrigger]);
+
+  useEffect(() => {
+    const fetchToUserAvatar = async () => {
+      try {
+        console.log(2, toUserId);
+        const result = await getAvatar(toUserId);
+        if (result) {
+          setToUserAvatar(result);
+        } else {
+          console.log("No avatar found");
+        }
+      } catch (error) {
+        console.error("Error finding avatar:", error);
+      }
+    };
+    fetchToUserAvatar();
+  }, [toUserId]);
 
   return (
     <Container
@@ -101,17 +134,29 @@ export default function ChatContent({
           <Box
             key={index}
             sx={{
-              display: 'flex',
-              justifyContent: item.sender_id === UserId ? 'flex-end' : 'flex-start',
+              display: "flex",
+              justifyContent:
+                item.sender_id === UserId ? "flex-end" : "flex-start",
               p: 1,
             }}
           >
-            <Paper
-              elevation={3}
-              sx={{ p: 2, m: 2, maxWidth: '70%' }}
-            >
+            {item.sender_id !== UserId && (
+              <Avatar
+                src={toUserAvatar}
+                alt="avatar"
+                sx={{ width: 40, height: 40, marginRight: 2 }}
+              />
+            )}
+            <Paper elevation={3} sx={{ p: 2, m: 2, maxWidth: "70%" }}>
               {item.content}
             </Paper>
+            {item.sender_id === UserId && (
+              <Avatar
+                src={userAvatar}
+                alt="avatar"
+                sx={{ width: 40, height: 40, marginLeft: 2 }}
+              />
+            )}
           </Box>
         ))}
       </Box>

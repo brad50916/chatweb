@@ -78,7 +78,13 @@ router.get('/users/:userId/avatar', async (req, res) => {
                     res.status(404).json({ error: 'File not found' });
                 }
             } else {
-                res.status(404).json({ error: 'No avatar URL found for user' });
+                const filePath = path.join(__dirname, 'Avatars', 'default.webp');
+
+                if (fs.existsSync(filePath)) {
+                    res.sendFile(filePath);
+                } else {
+                    res.status(404).json({ error: 'File not found' });
+                }
             }
         } else {
             res.status(404).json({ error: 'User not found' });
