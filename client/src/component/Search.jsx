@@ -80,7 +80,7 @@ export default function SearchBar({ UserId, setCurrentChatId }) {
         )}
         onChange={handleOptionSelect}
       />
-      <ViewProfile open={open} handleClose={handleClose} selectedUser={selectedUser} handleChat={handleChat} />
+      <ViewProfile startChat={true} open={open} handleClose={handleClose} selectedUser={selectedUser} handleChat={handleChat} />
     </Box>
   );
 }

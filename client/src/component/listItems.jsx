@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserName, getAvatar } from "./Api.jsx";
 
-
 const ChatListItem = ({
   item,
   UserId,

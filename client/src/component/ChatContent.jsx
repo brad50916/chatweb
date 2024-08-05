@@ -8,7 +8,8 @@ import Stack from "@mui/material/Stack";
 import { useState, useEffect, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import { getMessages, getToUserId } from "./Api.jsx";
-import { getAvatar } from "./Api.jsx";
+import { getAvatar, getUserInfo } from "./Api.jsx";
+import ViewProfile from "./ViewProfile.jsx";
 
 export default function ChatContent({
   UserId,
@@ -23,6 +24,14 @@ export default function ChatContent({
   const [userAvatar, setUserAvatar] = useState(null);
   const [toUserAvatar, setToUserAvatar] = useState(null);
   const boxRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [userProfile, setUserProfile] = useState(null);
+  const [toUserProfile, setToUserProfile] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+
   useEffect(() => {
     if (boxRef.current) {
       boxRef.current.scrollTop = boxRef.current.scrollHeight;
@@ -82,9 +91,20 @@ export default function ChatContent({
         console.error("Error finding avatar:", error);
       }
     };
+
+    const fetchUserProfile = async () => {
+      try {
+        const result = await getUserInfo(UserId);
+        setUserProfile(result);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
     fetchChatRoomData();
     fetchToUserId();
     fetchUserAvatar();
+    fetchUserProfile();
   }, [currentChatId, chatReloadTrigger]);
 
   useEffect(() => {
@@ -96,7 +116,16 @@ export default function ChatContent({
         console.error("Error finding avatar:", error);
       }
     };
+    const fetchToUserProfile = async () => {
+      try {
+        const result = await getUserInfo(toUserId);
+        setToUserProfile(result);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
     fetchToUserAvatar();
+    fetchToUserProfile();
   }, [toUserId]);
 
   return (
@@ -135,6 +164,10 @@ export default function ChatContent({
                 src={toUserAvatar}
                 alt="avatar"
                 sx={{ width: 40, height: 40, marginRight: 2 }}
+                onClick={() => {
+                  setSelectedUser(toUserProfile);
+                  setOpen(true);
+                }}
               />
             )}
             <Paper elevation={3} sx={{ p: 2, m: 2, maxWidth: "70%" }}>
@@ -145,6 +178,10 @@ export default function ChatContent({
                 src={userAvatar}
                 alt="avatar"
                 sx={{ width: 40, height: 40, marginLeft: 2 }}
+                onClick={() => {
+                  setSelectedUser(userProfile);
+                  setOpen(true);
+                }}
               />
             )}
           </Box>
@@ -170,6 +207,13 @@ export default function ChatContent({
           Send
         </Button>
       </Stack>
+      <ViewProfile
+        startChat={false}
+        open={open}
+        handleClose={handleClose}
+        selectedUser={selectedUser}
+        handleChat={null}
+      />
     </Container>
   );
 }

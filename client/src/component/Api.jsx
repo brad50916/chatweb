@@ -155,6 +155,20 @@ export const getToUserId = async (chatId, userId) => {
   }
 };
 
+export const getUserInfo = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/getUserInfo?userId=${userId}`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const modifyUserInfo = async (formData) => {
   try {
     const response = await fetch(`${API_URL}/modifyUserInfo`, {
