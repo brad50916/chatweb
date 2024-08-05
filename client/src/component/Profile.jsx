@@ -3,20 +3,18 @@ import {
   Typography,
   Button,
   Dialog,
-  DialogTitle,
   DialogContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modify from "./Modify.jsx";
 import Avatar from "./Avatar.jsx";
-import webpImage from '/default.webp';
 import { verifyToken, getAvatar } from "./Api.jsx";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [openModify, setOpenModify] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(webpImage);
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const navigate = useNavigate();
 
   // Load user data from localStorage on component mount

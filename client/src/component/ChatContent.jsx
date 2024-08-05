@@ -76,7 +76,6 @@ export default function ChatContent({
 
     const fetchUserAvatar = async () => {
       try {
-        console.log(1, UserId);
         const result = await getAvatar(UserId);
         if (result) {
           setUserAvatar(result);
@@ -95,7 +94,6 @@ export default function ChatContent({
   useEffect(() => {
     const fetchToUserAvatar = async () => {
       try {
-        console.log(2, toUserId);
         const result = await getAvatar(toUserId);
         if (result) {
           setToUserAvatar(result);
