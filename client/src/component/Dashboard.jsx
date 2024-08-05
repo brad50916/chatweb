@@ -214,11 +214,11 @@ export default function Dashboard() {
               Dashboard
             </Typography>
             <SearchBar UserId={UserId} setCurrentChatId={setCurrentChatId} />
-            <IconButton color="inherit">
+            {/* <IconButton color="inherit">
               <StyledBadge badgeContent={0} color="primary">
                 <NotificationsIcon />
               </StyledBadge>
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

@@ -110,12 +110,12 @@ export function SecondaryListItems({ onClickHandler }) {
         </ListItemIcon>
         <ListItemText primary="Profile" />
       </ListItemButton>
-      <ListItemButton>
+      {/* <ListItemButton>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Setting" />
-      </ListItemButton>
+      </ListItemButton> */}
       <ListItemButton onClick={onClickHandler}>
         <ListItemIcon>
           <LogoutIcon />
